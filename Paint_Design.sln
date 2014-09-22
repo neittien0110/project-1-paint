@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paint_Design", "Paint_Design\Paint_Design.csproj", "{6eb08c5b-b7fe-4735-a19e-4e6294512ea0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EB08C5B-B7FE-4735-A19E-4E6294512EA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB08C5B-B7FE-4735-A19E-4E6294512EA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB08C5B-B7FE-4735-A19E-4E6294512EA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB08C5B-B7FE-4735-A19E-4E6294512EA0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
