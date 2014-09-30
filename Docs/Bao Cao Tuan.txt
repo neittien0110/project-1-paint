@@ -1,0 +1,9 @@
+﻿Hoàng Minh Tuấn
+MSSV: 20122674
+Đề tài: Paint
+Báo cáo công việc tuần thứ 4:
+
+Báo cáo công việc tuần vừa qua: 
+       - Mở được File ảnh
+       - Lưu được file ảnh tuy nhiên chưa loại bỏ được phần ToolBar trong ảnh.
+       - Xử lí sự kiện Undo ( mới chỉ undo việc thêm đối tượng bằng cách remove đối tượng cuối cùng)
