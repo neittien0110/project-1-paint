@@ -23,3 +23,28 @@ C:\Users\Tuan\Documents\Visual Studio 2013\Projects\Paint_Design\Paint_Design\bi
 C:\Users\Tuan\Documents\Visual Studio 2013\Projects\Paint_Design\Paint_Design\bin\Debug\ru\Microsoft.Expression.Drawing.resources.dll
 C:\Users\Tuan\Documents\Visual Studio 2013\Projects\Paint_Design\Paint_Design\bin\Debug\zh-Hans\Microsoft.Expression.Drawing.resources.dll
 C:\Users\Tuan\Documents\Visual Studio 2013\Projects\Paint_Design\Paint_Design\bin\Debug\zh-Hant\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\Paint_Design.exe.config
+D:\Paint\Paint\Paint_Design\obj\Debug\Paint_Design.exe
+D:\Paint\Paint\Paint_Design\obj\Debug\Paint_Design.pdb
+D:\Paint\Paint\Paint_Design\bin\Debug\Paint_Design.exe
+D:\Paint\Paint\Paint_Design\bin\Debug\Paint_Design.pdb
+D:\Paint\Paint\Paint_Design\bin\Debug\Microsoft.Expression.Drawing.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\de\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\es\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\fr\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\it\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\ja\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\ko\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\ru\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\zh-Hans\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\bin\Debug\zh-Hant\Microsoft.Expression.Drawing.resources.dll
+D:\Paint\Paint\Paint_Design\obj\Debug\Paint_Design.csprojResolveAssemblyReference.cache
+D:\Paint\Paint\Paint_Design\obj\Debug\MainWindow.baml
+D:\Paint\Paint\Paint_Design\obj\Debug\Simple Styles.baml
+D:\Paint\Paint\Paint_Design\obj\Debug\App.baml
+D:\Paint\Paint\Paint_Design\obj\Debug\MainWindow.g.cs
+D:\Paint\Paint\Paint_Design\obj\Debug\App.g.cs
+D:\Paint\Paint\Paint_Design\obj\Debug\Paint_Design_MarkupCompile.cache
+D:\Paint\Paint\Paint_Design\obj\Debug\Paint_Design.g.resources
+D:\Paint\Paint\Paint_Design\obj\Debug\Paint_Design.Properties.Resources.resources
+D:\Paint\Paint\Paint_Design\obj\Debug\Paint_Design.csproj.GenerateResource.Cache

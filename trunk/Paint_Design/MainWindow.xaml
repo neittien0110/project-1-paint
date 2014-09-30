@@ -18,15 +18,15 @@
             </Menu.RenderTransform>
             <MenuItem Header="File" FontSize="13.333">
                 <MenuItem Header="New" HorizontalAlignment="Left" Width="162.666666666667" Click="New_Click"/>
-                <MenuItem Header="Open" HorizontalAlignment="Left" Width="162.666666666667" />
-                <MenuItem Header="Save" HorizontalAlignment="Left" Width="162.666666666667" />
+                <MenuItem Header="Open" HorizontalAlignment="Left" Width="162.666666666667" Click="Open_Click"/>
+                <MenuItem Header="Save" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_Click" />
                 <MenuItem Header="Save as" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.SaveAs"/>
                 <Separator HorizontalAlignment="Left" Width="162.666666666667"/>
                 <MenuItem Header="Help" HorizontalAlignment="Left" Width="162.666666666667"/>
                 <MenuItem Header="Exit" HorizontalAlignment="Left" Width="162.666666666667"  Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Edit" FontSize="13.333">
-                <MenuItem Header="Undo" HorizontalAlignment="Left" Width="162.666666666667"  Command="ApplicationCommands.Undo"/>
+                <MenuItem Header="Undo" HorizontalAlignment="Left" Width="162.666666666667"  Click="Undo_Click"/>
                 <MenuItem Header="Cut" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Cut"/>
                 <MenuItem Header="Copy" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Copy"/>
                 <MenuItem Header="Paste" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Paste"/>
@@ -145,10 +145,13 @@
                 <ColumnDefinition Width="32*"/>
                 <ColumnDefinition Width="26*"/>
             </Grid.ColumnDefinitions>
-        	<ComboBox SelectedIndex="0" Grid.ColumnSpan="3" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="6,1.225,0,0" Grid.Row="1" VerticalAlignment="Top" Width="77">
-        		<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="88.17"/>
-        		<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="88.17"/>
-        		<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="88.17"/>
+            <ComboBox SelectedIndex="0" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="20" Margin="6,1.225,0,0" Grid.Row="1" VerticalAlignment="Top" Width="89">
+                <ComboBoxItem Content="1" HorizontalAlignment="Left" Width="88.17">
+        		</ComboBoxItem>
+                <ComboBoxItem Content="2" HorizontalAlignment="Left" Width="88.17">
+                </ComboBoxItem>
+                <ComboBoxItem Content="4" HorizontalAlignment="Left" Width="88.17">
+                </ComboBoxItem>
         	</ComboBox>
         </Grid>
         <StatusBar Margin="2,0,3,0.5" Grid.Row="1" Height="26" VerticalAlignment="Bottom" Name="Status_bar">
