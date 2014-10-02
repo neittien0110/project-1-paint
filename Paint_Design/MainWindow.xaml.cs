@@ -27,6 +27,7 @@ namespace Paint_Design
     {
         Status status = new Status();
         List<Line> line = new List<Line>();
+        List<Ellipse> Elip = new List<Ellipse>();
         public MainWindow()
         {
             InitializeComponent();
@@ -131,6 +132,10 @@ namespace Paint_Design
                 line[line.Count - 1].StrokeThickness = 2;
                 MyCanvas.Children.Add(line[line.Count-1]);
             }
+            if (status.getTool()=="elip")
+            {
+                Elip[Elip.Count - 1]. = (int)e.GetPosition(this).X;
+            }
         }
         // Xu ly su kien MouseUp tren panel Canvas
         private void Mycanvas_Mouse_Up(object sender, MouseEventArgs e)
@@ -149,6 +154,13 @@ namespace Paint_Design
            if (count > 0)
                MyCanvas.Children.RemoveAt(count - 1);
              else MessageBox.Show("Can not undo");
+        }
+
+        private void Oval_Click(object sender, RoutedEventArgs e)
+        {
+            Ellipse elip = new Ellipse();
+            Elip.Add(elip);
+            status.setTool("elip");
         }
         
     }
