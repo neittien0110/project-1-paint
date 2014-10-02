@@ -103,12 +103,12 @@
                         <ImageBrush ImageSource="thang.jpg"/>
                     </Button.Background>
                 </Button>
-                <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="1" Margin="1,0,1,1" Height="23">
+                <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="1" Margin="1,0,1,1" Height="23" Click="Polygon_Click">
                     <Button.Background>
                         <ImageBrush ImageSource="Cong.jpg"/>
                     </Button.Background>
                 </Button>
-                <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="2" Margin="1,0,1,1">
+                <Button Content="" HorizontalAlignment="Left" Width="23" Grid.Column="2" Margin="1,0,0,3" Click="Oval_Click" Height="22" VerticalAlignment="Bottom">
                     <Button.Background>
                         <ImageBrush ImageSource="tron.jpg"/>
                     </Button.Background>
@@ -147,12 +147,12 @@
             </Grid.ColumnDefinitions>
             <ComboBox SelectedIndex="0" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="20" Margin="6,1.225,0,0" Grid.Row="1" VerticalAlignment="Top" Width="89">
                 <ComboBoxItem Content="1" HorizontalAlignment="Left" Width="88.17">
-        		</ComboBoxItem>
+                </ComboBoxItem>
                 <ComboBoxItem Content="2" HorizontalAlignment="Left" Width="88.17">
                 </ComboBoxItem>
                 <ComboBoxItem Content="4" HorizontalAlignment="Left" Width="88.17">
                 </ComboBoxItem>
-        	</ComboBox>
+            </ComboBox>
         </Grid>
         <StatusBar Margin="2,0,3,0.5" Grid.Row="1" Height="26" VerticalAlignment="Bottom" Name="Status_bar">
             <StatusBarItem Width="49" HorizontalAlignment="Left" Margin="0,1">
