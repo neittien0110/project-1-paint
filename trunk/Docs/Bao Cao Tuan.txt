@@ -1,9 +1,21 @@
 ﻿Hoàng Minh Tuấn
 MSSV: 20122674
 Đề tài: Paint
-Báo cáo công việc tuần thứ 4:
+
+Báo cáo công việc tuần 8:
 
 Báo cáo công việc tuần vừa qua: 
        - Mở được File ảnh
        - Lưu được file ảnh tuy nhiên chưa loại bỏ được phần ToolBar trong ảnh.
        - Xử lí sự kiện Undo ( mới chỉ undo việc thêm đối tượng bằng cách remove đối tượng cuối cùng)
+/*--------------------------------------------------------------*/
+Báo cáo công việc tuần 12:
+Báo cáo công việc: 
+*** Do thì và em cũng đang bận hoàn thành bài tập lớn môn Lập trình hướng đối tượng nên vừa qua em không tiến hành được thuận lợi***
+1. Đã làm: 
+	- Tìm hiểu thêm được lớp  System.Windows.Shapes.Ellipse và lớp  System.Windows.Shapes.Rectangle
+	- Vẽ được hình elip tại vị trí click chuột
+	- Vẽ được nhiều elips trên panel canvas
+2. Dự định
+	- Hoàn thành trong 2 đến 3 tuần nữa
+		

@@ -54,6 +54,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="MyEllip.cs" />
     <Compile Include="Status.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -114,6 +115,9 @@
     <Resource Include="thang.jpg" />
     <Resource Include="tron.jpg" />
     <Resource Include="zoom.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="cn.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

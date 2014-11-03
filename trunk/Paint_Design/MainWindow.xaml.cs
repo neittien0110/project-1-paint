@@ -27,7 +27,10 @@ namespace Paint_Design
     {
         Status status = new Status();
         List<Line> line = new List<Line>();
-        List<Ellipse> Elip = new List<Ellipse>();
+        List<Ellipse> ellip = new List<Ellipse>();
+        List<Polygon> polygon = new List<Polygon>();
+        const int x0 = 103;
+        const int y0 = 97;
         public MainWindow()
         {
             InitializeComponent();
@@ -55,8 +58,6 @@ namespace Paint_Design
                     Image bitmap = new Image { Source = img };
                     Canvas.SetLeft(bitmap, 0);
                     Canvas.SetTop(bitmap, 0);
-                    Canvas.SetRight(bitmap, 0);
-                    Canvas.SetBottom(bitmap, 0);
                     MyCanvas.Children.Clear();
                     MyCanvas.Children.Add(bitmap);
                 }
@@ -112,8 +113,15 @@ namespace Paint_Design
             double y = e.GetPosition(this).Y;
             if (status.getTool()=="line")
             {
-                line[line.Count-1].X2 = x-103;
-                line[line.Count-1].Y2 = y-79;
+                line[line.Count-1].X2 = x-x0;
+                line[line.Count-1].Y2 = y-y0;
+            }
+            if (status.getTool() == "ellip")
+            {
+                Ellipse ell;
+                ell = ellip[ellip.Count - 1];
+                   ell.Height = Math.Abs((e.GetPosition(this).Y - Canvas.GetTop(ell) - y0));
+                   ell.Width = Math.Abs((e.GetPosition(this).X - Canvas.GetLeft(ell) - x0));
             }
             MousePosition.Content = (x.ToString() + "," + y.ToString());
         }
@@ -122,8 +130,8 @@ namespace Paint_Design
         {
             if (status.getTool()=="line")
             {
-                line[line.Count - 1].X1 = e.GetPosition(this).X - 103;
-                line[line.Count - 1].Y1 = e.GetPosition(this).Y - 79;
+                line[line.Count - 1].X1 = e.GetPosition(this).X - x0;
+                line[line.Count - 1].Y1 = e.GetPosition(this).Y - y0;
                 line[line.Count - 1].X2 = line[line.Count-1].X1;
                 line[line.Count - 1].Y2 = line[line.Count-1].Y1;
                 line[line.Count - 1].Stroke = System.Windows.Media.Brushes.Black;
@@ -132,9 +140,15 @@ namespace Paint_Design
                 line[line.Count - 1].StrokeThickness = 2;
                 MyCanvas.Children.Add(line[line.Count-1]);
             }
-            if (status.getTool()=="elip")
+            if (status.getTool()=="ellip")
             {
-                Elip[Elip.Count - 1]. = (int)e.GetPosition(this).X;
+                ellip[ellip.Count - 1].Height = 1;
+                ellip[ellip.Count - 1].Width = 1;
+                ellip[ellip.Count - 1].StrokeThickness = 1;
+                ellip[ellip.Count - 1].Stroke = System.Windows.Media.Brushes.Black;
+                Canvas.SetTop(ellip[ellip.Count - 1], e.GetPosition(this).Y - y0);
+                Canvas.SetLeft(ellip[ellip.Count - 1], e.GetPosition(this).X - x0);
+                MyCanvas.Children.Add(ellip[ellip.Count - 1]);
             }
         }
         // Xu ly su kien MouseUp tren panel Canvas
@@ -142,10 +156,15 @@ namespace Paint_Design
         {
             if (status.getTool()=="line")
             {
-                line[line.Count-1].X2 = e.GetPosition(this).X - 103;
-                line[line.Count-1].Y2 = e.GetPosition(this).Y - 79;
+                line[line.Count-1].X2 = e.GetPosition(this).X - x0;
+                line[line.Count-1].Y2 = e.GetPosition(this).Y - y0;
                 Line _line = new Line();
                 line.Add(_line);
+            }
+            if (status.getTool()=="ellip")
+            {
+                Ellipse _ell = new Ellipse();
+                ellip.Add(_ell);
             }
         }
         private void Undo_Click(object sender, RoutedEventArgs e)
@@ -156,11 +175,11 @@ namespace Paint_Design
              else MessageBox.Show("Can not undo");
         }
 
-        private void Oval_Click(object sender, RoutedEventArgs e)
+        private void Ellip_Click(object sender, RoutedEventArgs e)
         {
             Ellipse elip = new Ellipse();
-            Elip.Add(elip);
-            status.setTool("elip");
+            ellip.Add(elip);
+            status.setTool("ellip");
         }
         
     }
