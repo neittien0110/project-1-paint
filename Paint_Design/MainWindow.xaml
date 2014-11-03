@@ -33,104 +33,125 @@
                 <MenuItem Header="Delete" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Delete"/>
             </MenuItem>
         </Menu>
-        <Grid Height="50" Margin="2,26,3,0" VerticalAlignment="Top" Background="#FFCBC2C2">
+        <Grid Height="71" Margin="2,26,3,0" VerticalAlignment="Top" Background="#FFCBC2C2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="25"/>
-                <ColumnDefinition Width="25     "/>
-                <ColumnDefinition Width="25"/>
-                <ColumnDefinition Width="25"/>
-                <ColumnDefinition Width="75"/>
-                <ColumnDefinition Width="88"/>
-                <ColumnDefinition Width="26"/>
-                <ColumnDefinition Width="37"/>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition Width="103*"/>
-                <ColumnDefinition Width="149*"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="33"/>
+                <ColumnDefinition Width="35"/>
+                <ColumnDefinition Width="35"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="115"/>
+                <ColumnDefinition Width="22"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Content="Select" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="48" Grid.RowSpan="2" Click="Button_Click_select">
-                <Button.Background>
-                    <ImageBrush ImageSource="Select.jpg"/>
-                </Button.Background>
+            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="58" Height="71" Grid.RowSpan="2" Click="Button_Click_select">
+                <Button.Content>
+                    <StackPanel>
+                        <Image Source="Select.jpg" Height="45" Width="50"/>
+                        <TextBlock Text="Select" TextAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
             </Button>
-            <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="1" Margin="1,1,0,0" Height="23">
-                <Button.Background>
-                    <ImageBrush ImageSource="Tay.jpg"/>
-                </Button.Background>
+            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,1,0,0" Height="32">
+                <Button.Content>
+                    <Image Source="Tay.jpg"/>
+                </Button.Content>
             </Button>
-            <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="1" Margin="1,1,0,0" Height="23" Grid.Row="1">
-                <Button.Background>
-                    <ImageBrush ImageSource="Mau.jpg"/>
-                </Button.Background>
+            <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,2.5,0,0" Height="32" Grid.Row="1">
+                <Button.Content>
+                    <Image Source="Mau.jpg"/>
+                </Button.Content>
             </Button>
-            <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="2" Margin="1,1,0,0" Height="23">
-                <Button.Background>
-                    <ImageBrush ImageSource="Text.jpg"/>
-                </Button.Background>
+            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,1,0,0" Height="32">
+                <Button.Content>
+                    <Image Source="Text.jpg"/>
+                </Button.Content>
             </Button>
-            <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="2" Margin="1,1,0,0" Height="23" Grid.Row="1">
-                <Button.Background>
-                    <ImageBrush ImageSource="zoom.jpg"/>
-                </Button.Background>
+            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,2.5,0,0" Height="32" Grid.Row="1">
+                <Button.Content>
+                    <Image Source="zoom.jpg"/>
+                </Button.Content>
             </Button>
-            <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="3" Margin="1,1,0,0" Height="23">
-                <Button.Background>
-                    <ImageBrush ImageSource="but.jpg"/>
-                </Button.Background>
+            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="3" Margin="1,1,0,0" Height="32">
+                <Button.Content>
+                    <Image Source="but.jpg"/>
+                </Button.Content>
             </Button>
-            <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="3" Margin="1,1,0,0" Height="23" Grid.Row="1">
-                <Button.Background>
-                    <ImageBrush ImageSource="setColor.jpg"/>
-                </Button.Background>
+            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="3" Margin="1,2.5,0,0" Height="32" Grid.Row="1">
+                <Button.Content>
+                    <Image Source="setColor.jpg"/>
+                </Button.Content>
             </Button>
-            <Separator Grid.Column="4" HorizontalAlignment="Left" Height="44" Margin="11,2,0,0" Grid.RowSpan="2" Style="{DynamicResource SimpleSeparator}" VerticalAlignment="Top" Width="3"/>
-            <Grid Grid.Column="5" HorizontalAlignment="Left" Height="48" Margin="0,1" Grid.RowSpan="2" VerticalAlignment="Top" Width="75" Background="#FFC1A2A2">
+            <Separator Grid.Column="4" HorizontalAlignment="Left" Height="66" Margin="10,2,0,0" Grid.RowSpan="2" Style="{DynamicResource SimpleSeparator}" VerticalAlignment="Top" Width="2"/>
+            <Grid Grid.Column="5" HorizontalAlignment="Left" Height="70" Margin="4,1,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="107" Background="#FFC1A2A2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25"/>
-                    <ColumnDefinition Width="25"/>
-                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="35"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="" HorizontalAlignment="Left" Width="23" Margin="1,0,0,2" Click="Button_Click_line">
-                    <Button.Background>
-                        <ImageBrush ImageSource="thang.jpg"/>
-                    </Button.Background>
+                <Button HorizontalAlignment="Left" Width="32" Margin="1,0,0,2" Click="Button_Click_line">
+                    <Button.Content>
+                        <Image Source="thang.jpg"/>
+                    </Button.Content>
                 </Button>
-                <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="1" Margin="1,0,1,1" Height="23" Click="Polygon_Click">
-                    <Button.Background>
-                        <ImageBrush ImageSource="Cong.jpg"/>
-                    </Button.Background>
+                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,0,1,1" Height="32">
+                    <Button.Content>
+                        <Image Source="cn.jpg"/>
+                    </Button.Content>
                 </Button>
-                <Button Content="" HorizontalAlignment="Left" Width="23" Grid.Column="2" Margin="1,0,0,3" Click="Oval_Click" Height="22" VerticalAlignment="Bottom">
-                    <Button.Background>
-                        <ImageBrush ImageSource="tron.jpg"/>
-                    </Button.Background>
+                <Button HorizontalAlignment="Left" Width="32" Grid.Column="2" Margin="1,0,0,3" Height="32" VerticalAlignment="Bottom" Click="Ellip_Click">
+                    <Button.Content>
+                        <Image Source="tron.jpg"/>
+                    </Button.Content>
                 </Button>
-                <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Row="1" Margin="1,1,1,0">
-                    <Button.Background>
-                        <ImageBrush ImageSource="tamgiacvuong.jpg"/>
-                    </Button.Background>
+                <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Height="32">
+                    <Button.Content>
+                        <Image Source="tamgiacvuong.jpg"/>
+                    </Button.Content>
                 </Button>
-                <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Row="1" Margin="1,1,1,0" Grid.Column="1">
-                    <Button.Background>
-                        <ImageBrush ImageSource="left.jpg"/>
-                    </Button.Background>
+                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Grid.Column="1" Height="32">
+                    <Button.Content>
+                        <Image Source="left.jpg"/>
+                    </Button.Content>
                 </Button>
-                <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Grid.Column="2" Margin="1,1,1,0" Grid.Row="1">
-                    <Button.Background>
-                        <ImageBrush ImageSource="right.jpg"/>
-                    </Button.Background>
+                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,1,1,0" Grid.Row="1" Height="32">
+                    <Button.Content>
+                        <Image Source="right.jpg"/>
+                    </Button.Content>
                 </Button>
             </Grid>
+            <Grid Grid.Column="7" HorizontalAlignment="Left" Height="60" Margin="2,5,1,5" Grid.RowSpan="2" VerticalAlignment="Top" Width="243">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="0*"/>
+                </Grid.ColumnDefinitions>
+                <Button IsEnabled="True" HorizontalAlignment="Left" Height="58" Margin="1,1,1,1" VerticalAlignment="Top" Width="48">
+                    <Button.Content>
+                        <StackPanel>
+                            <Label Name="Color" Height="38" Width="38" BorderThickness="1" BorderBrush="Black" Background="Black"/>
+                            <TextBlock Text="Fill" TextAlignment="Center"></TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
+            <Separator Grid.Column="6" HorizontalAlignment="Left" Height="66" Margin="10,2,0,0" Grid.RowSpan="2" Style="{DynamicResource SimpleSeparator}" VerticalAlignment="Top" Width="2"/>
+
         </Grid>
-        <Grid Background="#FFCBC2C2" Margin="3,79.5,0,0" HorizontalAlignment="Left" Width="97" >
+        <Grid Background="#FFCBC2C2" Margin="3,100,0,0" HorizontalAlignment="Left" Width="97" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="9*"/>
                 <RowDefinition Height="25*"/>
@@ -161,10 +182,11 @@
             <ProgressBar Value="30" Height="18" Width="87"></ProgressBar>
             <StatusBarItem Name="MousePosition" Height="26" VerticalAlignment="Top"/>
         </StatusBar>
-        <Canvas Margin="103,79,2,2"
+        <Canvas Margin="103,100,3,2"
 		Background="White" Name="MyCanvas" MouseMove="Mycanvas_Mouse_Move"
                    MouseDown="Mycanvas_Mouse_Down"
-                   MouseUp="Mycanvas_Mouse_Up"
-		/>
+                   MouseUp="Mycanvas_Mouse_Up" Cursor="Arrow"
+		>
+        </Canvas>
     </Grid>
 </Window>
