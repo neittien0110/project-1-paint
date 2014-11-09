@@ -181,6 +181,7 @@ namespace Paint_Design
             ellip.Add(elip);
             status.setTool("ellip");
         }
+
         
     }
 }
