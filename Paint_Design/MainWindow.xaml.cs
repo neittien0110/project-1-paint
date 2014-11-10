@@ -1,64 +1,70 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Drawing;
-using Microsoft.Win32;
-using System.IO;
-using System.Windows.Ink;
-using System.Collections;
 
 namespace Paint_Design
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Chương trình chính 
     /// </summary>
     public partial class MainWindow : Window
     {
-        Status status = new Status();
-        List<Line> line = new List<Line>();
-        List<Ellipse> ellip = new List<Ellipse>();
-        List<Polygon> polygon = new List<Polygon>();
-        const int x0 = 103;
-        const int y0 = 97;
+        public Status status = new Status(); 
+        public List<Line> line = new List<Line>(); 
+        public List<MyEllip> ellip = new List<MyEllip>();
+        public List<Polygon> polygon = new List<Polygon>();
+        public List<MyRectangle> rectangle = new List<MyRectangle>();
         public MainWindow()
         {
             InitializeComponent();
         }
-        //Xu ly su kien cho MenuItem New
-        private void New_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Xóa hết các hình trên panel Canvas
+        /// </summary>
+        public void New_Click(object sender, RoutedEventArgs e)
         {
+            /// Xử lý sự kiện khi click vào MenuItem New
+            /// Sử dụng hàm Clear() được dựng sẵn để xóa các đối tượng trong MyCanvas
             MyCanvas.Children.Clear();
         }
-        //Xu ly su kien cho MenuItem Exit
-        private void Exit_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        ///  Xử lý sự kiện khi click vào MenuItem Exit
+        /// </summary>
+        public void Exit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-        //xu ly su kien cho MenuItem Open
-        private void Open_Click(object sender, RoutedEventArgs e)
+        /*!
+         * @brief Hàm mở OpenFileDialog và chọn file Image
+         */
+        public void Open_Click(object sender, RoutedEventArgs e)
         {
+            ///- Thực hiện : File image được chọn được load trên MyCanvas
+            ///- Quá trình:
+            /// <ul>
+            /// <li> Tạo dialog</li>          
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.Filter = "All Image File | *.*";
             dlg.Multiselect = false;
+            /// <li> Hiển thị dialog </li>
             if ((bool)dlg.ShowDialog())
                 try
                 {
+                    /// <li> Load file image</li>
                     ImageSource img = new BitmapImage(new Uri(dlg.FileName));
                     Image bitmap = new Image { Source = img };
                     Canvas.SetLeft(bitmap, 0);
                     Canvas.SetTop(bitmap, 0);
                     MyCanvas.Children.Clear();
+                    /// <li> add image vào MyCanvas</li>
+                    /// </ul>
                     MyCanvas.Children.Add(bitmap);
                 }
                 catch (Exception ex)
@@ -67,7 +73,12 @@ namespace Paint_Design
                 }
         }
         //Xy ly su kien chi MenuItem Save
-        private void Save_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        ///  Lưu file image lên ổ cứng
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void Save_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.Filter = "JPEG Image|*.jpg|PNG Image|*.png| Bitmap Image|*.bmp";
@@ -95,79 +106,150 @@ namespace Paint_Design
 
         }
         //Xu ly su kien cho Button line
-        private void Button_Click_line(object sender, RoutedEventArgs e)
+        /// <summary>
+        ///  Khi click vào Tool vẽ đường thằng . . .
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void Button_Click_line(object sender, RoutedEventArgs e)
         {
+            ///- Thêm 1 đối tượng thuộc lớp System.Windows.Shapes.Line
             Line _line = new Line();
             line.Add(_line);
+            ///- Thêm vào danh sách đường thẳng ban đầu
             status.setTool("line");
             
         }
-        private void Button_Click_select(object sender, RoutedEventArgs e)
+        public void Button_Click_select(object sender, RoutedEventArgs e)
         {
             status.setTool("Select");
         }
         // Xu ly su kien MouseMove tren panel Canvas
+        /// <summary>
+        /// Xử lý sự kiện MouseMove trên MyCanvas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void Mycanvas_Mouse_Move(object sender, MouseEventArgs e)
-        {
-            double x = e.GetPosition(this).X;
-            double y = e.GetPosition(this).Y;
+        {   
+            /// - Lấy tọa độ chuột
+            double x = e.GetPosition(MyCanvas).X;
+            double y = e.GetPosition(MyCanvas).Y;
+            /// - Xử lí
+            /// <ul>
+            /// <li> Vẽ đoạn thẳng</li>
             if (status.getTool()=="line")
             {
-                line[line.Count-1].X2 = x-x0;
-                line[line.Count-1].Y2 = y-y0;
+             
+                line[line.Count-1].X2 = x;
+                line[line.Count-1].Y2 = y;
             }
+            /// <li>Vẽ ellip </li>
             if (status.getTool() == "ellip")
             {
+                MyEllip myellip= ellip[ellip.Count-1];
                 Ellipse ell;
-                ell = ellip[ellip.Count - 1];
-                   ell.Height = Math.Abs((e.GetPosition(this).Y - Canvas.GetTop(ell) - y0));
-                   ell.Width = Math.Abs((e.GetPosition(this).X - Canvas.GetLeft(ell) - x0));
+                ell = ellip[ellip.Count - 1].ellip;
+                ell.Height = Math.Abs((y - myellip.getY_Up()));
+                ell.Width = Math.Abs((x - myellip.getX_Up()));
+                if (e.GetPosition(MyCanvas).Y > myellip.getY_Up())
+                {
+                    Canvas.SetTop(myellip.ellip, myellip.getY_Up());
+                }
+                else Canvas.SetTop(myellip.ellip, e.GetPosition(MyCanvas).Y);
+                
+                if (e.GetPosition(MyCanvas).X > myellip.getX_Up())
+                {
+                    Canvas.SetLeft(myellip.ellip, myellip.getX_Up());
+                }
+                else Canvas.SetLeft(myellip.ellip, e.GetPosition(MyCanvas).X);
+            }
+            /// <li> Vẽ hình chữ nhật </li>
+            if (status.getTool() == "rectangle")
+            {
+                MyRectangle myrec = rectangle[rectangle.Count - 1];
+                Rectangle rec;
+                rec = rectangle[rectangle.Count - 1].rectangle;
+                rec.Height = Math.Abs((y - myrec.getY_Up()));
+                rec.Width = Math.Abs((x - myrec.getX_Up()));
+                if (e.GetPosition(MyCanvas).Y > myrec.getY_Up())
+                {
+                    Canvas.SetTop(myrec.rectangle, myrec.getY_Up());
+                }
+                else Canvas.SetTop(myrec.rectangle, e.GetPosition(MyCanvas).Y );
+
+                if (e.GetPosition(MyCanvas).X > myrec.getX_Up())
+                {
+                    Canvas.SetLeft(myrec.rectangle, myrec.getX_Up());
+                }
+                else Canvas.SetLeft(myrec.rectangle, e.GetPosition(MyCanvas).X);
             }
             MousePosition.Content = (x.ToString() + "," + y.ToString());
+            /// </ul>
         }
         // Xu ly su kien MouseUp tren panel Canvas
-        private void Mycanvas_Mouse_Down(object sender, MouseEventArgs e)
+        public void Mycanvas_Mouse_Down(object sender, MouseEventArgs e)
         {
             if (status.getTool()=="line")
             {
-                line[line.Count - 1].X1 = e.GetPosition(this).X - x0;
-                line[line.Count - 1].Y1 = e.GetPosition(this).Y - y0;
+                line[line.Count - 1].X1 = e.GetPosition(MyCanvas).X ;
+                line[line.Count - 1].Y1 = e.GetPosition(MyCanvas).Y ;
                 line[line.Count - 1].X2 = line[line.Count-1].X1;
                 line[line.Count - 1].Y2 = line[line.Count-1].Y1;
                 line[line.Count - 1].Stroke = System.Windows.Media.Brushes.Black;
                 line[line.Count - 1].HorizontalAlignment = HorizontalAlignment.Left;
                 line[line.Count - 1].VerticalAlignment = VerticalAlignment.Center;
-                line[line.Count - 1].StrokeThickness = 2;
+                line[line.Count - 1].StrokeThickness = (listSize.SelectedIndex + 1)*2;
                 MyCanvas.Children.Add(line[line.Count-1]);
             }
             if (status.getTool()=="ellip")
             {
-                ellip[ellip.Count - 1].Height = 1;
-                ellip[ellip.Count - 1].Width = 1;
-                ellip[ellip.Count - 1].StrokeThickness = 1;
-                ellip[ellip.Count - 1].Stroke = System.Windows.Media.Brushes.Black;
-                Canvas.SetTop(ellip[ellip.Count - 1], e.GetPosition(this).Y - y0);
-                Canvas.SetLeft(ellip[ellip.Count - 1], e.GetPosition(this).X - x0);
-                MyCanvas.Children.Add(ellip[ellip.Count - 1]);
+
+                ellip[ellip.Count - 1].setX_Up(e.GetPosition(MyCanvas).X );
+                ellip[ellip.Count - 1].setY_Up(e.GetPosition(MyCanvas).Y );
+                ellip[ellip.Count - 1].ellip.Height = 1;
+                ellip[ellip.Count - 1].ellip.Width = 1;
+                ellip[ellip.Count - 1].ellip.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
+                ellip[ellip.Count - 1].ellip.Stroke = System.Windows.Media.Brushes.Black;
+                MyCanvas.Children.Add(ellip[ellip.Count - 1].ellip);
+
+            }
+            if (status.getTool() == "rectangle")
+            {
+
+                rectangle[rectangle.Count - 1].setX_Up(e.GetPosition(MyCanvas).X);
+                rectangle[rectangle.Count - 1].setY_Up(e.GetPosition(MyCanvas).Y);
+                rectangle[rectangle.Count - 1].rectangle.Height = 1;
+                rectangle[rectangle.Count - 1].rectangle.Width = 1;
+                rectangle[rectangle.Count - 1].rectangle.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
+                rectangle[rectangle.Count - 1].rectangle.Stroke = System.Windows.Media.Brushes.Black;
+                MyCanvas.Children.Add(rectangle[rectangle.Count - 1].rectangle);
+
             }
         }
         // Xu ly su kien MouseUp tren panel Canvas
-        private void Mycanvas_Mouse_Up(object sender, MouseEventArgs e)
+        public void Mycanvas_Mouse_Up(object sender, MouseEventArgs e)
         {
             if (status.getTool()=="line")
             {
-                line[line.Count-1].X2 = e.GetPosition(this).X - x0;
-                line[line.Count-1].Y2 = e.GetPosition(this).Y - y0;
+                line[line.Count-1].X2 = e.GetPosition(MyCanvas).X;
+                line[line.Count-1].Y2 = e.GetPosition(MyCanvas).Y;
                 Line _line = new Line();
                 line.Add(_line);
             }
             if (status.getTool()=="ellip")
             {
-                Ellipse _ell = new Ellipse();
+                MyEllip _ell = new MyEllip();
                 ellip.Add(_ell);
             }
+             if (status.getTool()=="rectangle")
+             {
+                 MyRectangle _rec = new MyRectangle();
+                 rectangle.Add(_rec);
+             }
         }
-        private void Undo_Click(object sender, RoutedEventArgs e)
+       
+        public void Undo_Click(object sender, RoutedEventArgs e)
         {
            int count = MyCanvas.Children.Count;
            if (count > 0)
@@ -175,13 +257,19 @@ namespace Paint_Design
              else MessageBox.Show("Can not undo");
         }
 
-        private void Ellip_Click(object sender, RoutedEventArgs e)
+        public void Ellip_Click(object sender, RoutedEventArgs e)
         {
-            Ellipse elip = new Ellipse();
-            ellip.Add(elip);
+            MyEllip ell = new MyEllip();
+            ellip.Add(ell);
             status.setTool("ellip");
         }
+        public void Rectangle_Click(object sender, RoutedEventArgs e)
+        {
+            MyRectangle rec = new MyRectangle();
+            rectangle.Add(rec);
+            status.setTool("rectangle");
+        }
 
-        
+       
     }
 }
