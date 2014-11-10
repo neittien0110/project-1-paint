@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Paint_Design
 {
-    class Status
+    public class Status
     {
+        /// <summary>
+        /// Là trạng thái của chương trình ( công cụ đang sử dụng, màu sắc, kích thước
+        /// </summary>
         private String ToolBar;
         private String Color;
         private int Size;
