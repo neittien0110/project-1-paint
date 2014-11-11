@@ -214,15 +214,22 @@
         </StatusBar>
             <Canvas Margin="106,102,3,0" ClipToBounds="True"
 		Background="White" Name="MyCanvas" MouseMove="Mycanvas_Mouse_Move"
-                   MouseDown="Mycanvas_Mouse_Down"
-                   MouseUp="Mycanvas_Mouse_Up"
-                   Cursor="Arrow" ScrollViewer.CanContentScroll="True" AllowDrop="True"
+                   MouseLeftButtonDown="Mycanvas_Mouse_Down"
+                   MouseLeftButtonUp="Mycanvas_Mouse_Up"
+                   
+                   Cursor="Cross" ScrollViewer.CanContentScroll="True" 
+                    AllowDrop="True"
 		>
             <Rectangle
-                x:Name="selectionBox"
+                x:Name="selectionRectangle"
                 Visibility="Collapsed"
-                Stroke="Black"
-                StrokeThickness="1"
+                Fill="#220000FF"
+                StrokeDashArray="3 2"
+                Stroke="Blue"
+                StrokeThickness="2" Cursor="SizeAll"
+                MouseLeftButtonDown="selectionRectangle_MouseLeftButtonDown"
+                MouseLeftButtonUp="selectionRectangle_MouseLeftButtonUp"
+                MouseMove="selectionRectangle_MouseMove"
                 />
             <Canvas.ContextMenu>
                 <ContextMenu>
