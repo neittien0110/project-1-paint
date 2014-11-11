@@ -231,6 +231,7 @@
                 MouseLeftButtonUp="selectionRectangle_MouseLeftButtonUp"
                 MouseMove="selectionRectangle_MouseMove"
                 />
+            <CheckBox Content="CheckBox" Height="21" Canvas.Left="200" Canvas.Top="84" Width="158" AllowDrop="True"/>
             <Canvas.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Clear" Click="New_Click"/>
