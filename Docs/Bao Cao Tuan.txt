@@ -9,7 +9,7 @@ Báo cáo công việc tuần vừa qua:
        - Lưu được file ảnh tuy nhiên chưa loại bỏ được phần ToolBar trong ảnh.
        - Xử lí sự kiện Undo ( mới chỉ undo việc thêm đối tượng bằng cách remove đối tượng cuối cùng)
 /*--------------------------------------------------------------*/
-Báo cáo công việc tuần 12:
+Báo cáo công việc tuần 13:
 Báo cáo công việc: 
 *** Do thì và em cũng đang bận hoàn thành bài tập lớn môn Lập trình hướng đối tượng nên vừa qua em không tiến hành được thuận lợi***
 1. Đã làm: 
@@ -18,4 +18,17 @@ Báo cáo công việc:
 	- Vẽ được nhiều elips trên panel canvas
 2. Dự định
 	- Hoàn thành trong 2 đến 3 tuần nữa
+
+/*--------------------------------------------------------------*/
+Báo cáo công việc tuần 14:
+Báo cáo công việc: 
+1. Đã làm: 
+	- Xây dựng context menu cho panel canvas
+	- Vẽ hình chữ nhật 
+	- Sửa lại chức năng lưu fille ảnh ( đã loại bỏ được phần Toolbar không cần thiết trong ảnh cần lưu)
+2.Đang làm:
+	- Công cụ select 
+	- Scroll cho panel Canvas
+	- Coment theo doxygen 
+	
 		
