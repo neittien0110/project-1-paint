@@ -21,9 +21,12 @@ namespace Paint_Design
         public List<MyEllip> ellip = new List<MyEllip>();
         public List<Polygon> polygon = new List<Polygon>();
         public List<MyRectangle> rectangle = new List<MyRectangle>();
+        public Point point_start = new Point();
+        public Boolean ClickDown = new Boolean();
         public MainWindow()
         {
             InitializeComponent();
+            ClickDown = false;
         }
         /// <summary>
         /// Xóa hết các hình trên panel Canvas
@@ -33,6 +36,7 @@ namespace Paint_Design
             /// Xử lý sự kiện khi click vào MenuItem New
             /// Sử dụng hàm Clear() được dựng sẵn để xóa các đối tượng trong MyCanvas
             MyCanvas.Children.Clear();
+            MyCanvas.Children.Add(selectionRectangle);
         }
         /// <summary>
         ///  Xử lý sự kiện khi click vào MenuItem Exit
@@ -62,7 +66,6 @@ namespace Paint_Design
                     Image bitmap = new Image { Source = img };
                     Canvas.SetLeft(bitmap, 0);
                     Canvas.SetTop(bitmap, 0);
-                    MyCanvas.Children.Clear();
                     /// <li> add image vào MyCanvas</li>
                     /// </ul>
                     MyCanvas.Children.Add(bitmap);
@@ -87,10 +90,17 @@ namespace Paint_Design
                 try
                 {
                     string fileName = dlg.FileName;
-                    int width = (int)MyCanvas.ActualWidth;
-                    int height = (int)MyCanvas.ActualHeight;
-                    RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
-                    rtb.Render(MyCanvas);
+                    Rect bounds = VisualTreeHelper.GetDescendantBounds(MyCanvas);
+                    double dpi = 96d;
+                    RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, PixelFormats.Default);
+                    DrawingVisual dv = new DrawingVisual();
+                    using (DrawingContext dc = dv.RenderOpen())
+                    {
+                        VisualBrush vb = new VisualBrush(MyCanvas);
+                        dc.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
+                    }
+
+                    rtb.Render(dv);
                     using (FileStream fs = new FileStream(fileName, FileMode.Create))
                     {
                         BitmapEncoder encoder = new BmpBitmapEncoder();
@@ -130,6 +140,7 @@ namespace Paint_Design
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+#region "Mouse events on MyCanvas"
         public void Mycanvas_Mouse_Move(object sender, MouseEventArgs e)
         {   
             /// - Lấy tọa độ chuột
@@ -184,10 +195,20 @@ namespace Paint_Design
                 }
                 else Canvas.SetLeft(myrec.rectangle, e.GetPosition(MyCanvas).X);
             }
+            if (status.getTool() == "Select")
+                if (ClickDown)
+            {
+                selectionRectangle.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
+                selectionRectangle.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
+                selectionRectangle.Width = Math.Abs(x - point_start.X);
+                selectionRectangle.Height = Math.Abs(y - point_start.Y);
+                if (selectionRectangle.Visibility != Visibility.Visible)
+                    selectionRectangle.Visibility = Visibility.Visible;  
+            }
             MousePosition.Content = (x.ToString() + "," + y.ToString());
             /// </ul>
         }
-        // Xu ly su kien MouseUp tren panel Canvas
+        // Xu ly su kien MouseDown tren panel Canvas
         public void Mycanvas_Mouse_Down(object sender, MouseEventArgs e)
         {
             if (status.getTool()=="line")
@@ -226,6 +247,13 @@ namespace Paint_Design
                 MyCanvas.Children.Add(rectangle[rectangle.Count - 1].rectangle);
 
             }
+            if (status.getTool() == "Select")
+            {
+                point_start.X = e.GetPosition(MyCanvas).X;
+                point_start.Y = e.GetPosition(MyCanvas).Y;
+                ClickDown = true;
+            }
+            
         }
         // Xu ly su kien MouseUp tren panel Canvas
         public void Mycanvas_Mouse_Up(object sender, MouseEventArgs e)
@@ -247,8 +275,17 @@ namespace Paint_Design
                  MyRectangle _rec = new MyRectangle();
                  rectangle.Add(_rec);
              }
+             if (status.getTool() == "Select")
+                 if (ClickDown)
+             {
+                 ClickDown = false;
+                 if (selectionRectangle.Visibility != Visibility.Visible)
+                selectionRectangle.Visibility = Visibility.Visible;
+                 Rect rect = new Rect(Canvas.GetLeft(selectionRectangle), Canvas.GetTop(selectionRectangle), selectionRectangle.Width, selectionRectangle.Height);
+                 status.setTool("Selected");
+            }
         }
-       
+#endregion    
         public void Undo_Click(object sender, RoutedEventArgs e)
         {
            int count = MyCanvas.Children.Count;
@@ -270,6 +307,34 @@ namespace Paint_Design
             status.setTool("rectangle");
         }
 
+        private void selectionRectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+           
+            var draggable = sender as Image;
+            draggable.CaptureMouse();
+            point_start.X = e.GetPosition(selectionRectangle).X;
+            point_start.Y = e.GetPosition(selectionRectangle).Y;
+            ClickDown = true;
+        }
+        private void selectionRectangle_MouseMove(object sender, MouseEventArgs e)
+        {
+            double x = e.GetPosition(MyCanvas).X;
+            double y = e.GetPosition(MyCanvas).Y;
+
+            Rect rect1 = new Rect(Canvas.GetLeft(selectionRectangle), Canvas.GetTop(selectionRectangle), selectionRectangle.Width, selectionRectangle.Height);
+                System.Windows.Int32Rect rcFrom = new System.Windows.Int32Rect();
+                rcFrom.X = (int)(rect1.X);
+                rcFrom.Y = (int)(rect1.Y);
+                rcFrom.Width = (int)(selectionRectangle.Width);
+                rcFrom.Height = (int)(selectionRectangle.Height);  
+                //BitmapSource bs = new CroppedBitmap(Mycanvas.Source as BitmapSource, rcFrom);
+                //image2.Source = bs; 
+            }
+
+        private void selectionRectangle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+        int x=1;
+        }
        
     }
 }
