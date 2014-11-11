@@ -310,30 +310,11 @@ namespace Paint_Design
         private void selectionRectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
            
-            var draggable = sender as Image;
-            draggable.CaptureMouse();
-            point_start.X = e.GetPosition(selectionRectangle).X;
-            point_start.Y = e.GetPosition(selectionRectangle).Y;
-            ClickDown = true;
         }
         private void selectionRectangle_MouseMove(object sender, MouseEventArgs e)
         {
-            double x = e.GetPosition(MyCanvas).X;
-            double y = e.GetPosition(MyCanvas).Y;
-
-            Rect rect1 = new Rect(Canvas.GetLeft(selectionRectangle), Canvas.GetTop(selectionRectangle), selectionRectangle.Width, selectionRectangle.Height);
-                System.Windows.Int32Rect rcFrom = new System.Windows.Int32Rect();
-                rcFrom.X = (int)(rect1.X);
-                rcFrom.Y = (int)(rect1.Y);
-                rcFrom.Width = (int)(selectionRectangle.Width);
-                rcFrom.Height = (int)(selectionRectangle.Height);  
-                //BitmapSource bs = new CroppedBitmap(Mycanvas.Source as BitmapSource, rcFrom);
-                //image2.Source = bs; 
-            }
-
         private void selectionRectangle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-        int x=1;
         }
        
     }
