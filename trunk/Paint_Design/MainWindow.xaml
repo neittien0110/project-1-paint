@@ -1,243 +1,256 @@
 ﻿<Window x:Class="Paint_Design.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MyPaint" Height="699" Width="1288.5" Background="#FF8F8B8B">
-    <Grid Margin="0,0,-2,-2" MouseMove="Mycanvas_Mouse_Move"
-                   MouseUp="Mycanvas_Mouse_Up">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="40"/>
-        </Grid.RowDefinitions>
-        <Menu Height="24" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Margin="-0.317,0,3.86,0" Background="#FFCFC2C2" BorderThickness="1">
-            <Menu.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleX="0.807"/>
-                    <RotateTransform/>
-                    <TranslateTransform X="0.486"/>
-                </TransformGroup>
-            </Menu.RenderTransform>
-            <MenuItem Header="File" FontSize="13.333">
-                <MenuItem Header="New" HorizontalAlignment="Left" Width="162.666666666667" Click="New_Click"/>
-                <MenuItem Header="Open" HorizontalAlignment="Left" Width="162.666666666667" Click="Open_Click"/>
-                <MenuItem Header="Save" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_Click" />
-                <MenuItem Header="Save as" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.SaveAs"/>
-                <Separator HorizontalAlignment="Left" Width="162.666666666667"/>
-                <MenuItem Header="Help" HorizontalAlignment="Left" Width="162.666666666667"/>
-                <MenuItem Header="Exit" HorizontalAlignment="Left" Width="162.666666666667"  Click="Exit_Click"/>
-            </MenuItem>
-            <MenuItem Header="Edit" FontSize="13.333">
-                <MenuItem Header="Undo" HorizontalAlignment="Left" Width="162.666666666667"  Click="Undo_Click"/>
-                <MenuItem Header="Cut" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Cut"/>
-                <MenuItem Header="Copy" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Copy"/>
-                <MenuItem Header="Paste" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Paste"/>
-                <MenuItem Header="Delete" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Delete"/>
-            </MenuItem>
-        </Menu>
-        <Grid Height="71" Margin="2,26,3,0" VerticalAlignment="Top" Background="#FFCBC2C2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="33"/>
-                <ColumnDefinition Width="35"/>
-                <ColumnDefinition Width="35"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="115"/>
-                <ColumnDefinition Width="22"/>
-                <ColumnDefinition Width="250"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        Title="MyPaint" Height="700" Width="1288.5" Background="#FF8F8B8B" WindowStartupLocation="CenterScreen" Icon="but.jpg" 
+        >
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+        <Grid Margin="0" MouseMove="Mycanvas_Mouse_Move"
+                   MouseUp="Mycanvas_Mouse_Up" MinWidth="1000" MinHeight="600" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="58" Height="71" Grid.RowSpan="2" Click="Button_Click_select">
-                <Button.Content>
-                    <StackPanel>
-                        <Image Source="Select.jpg" Height="45" Width="50"/>
-                        <TextBlock Text="Select" TextAlignment="Center"/>
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,1,0,0" Height="32">
-                <Button.Content>
-                    <Image Source="Tay.jpg"/>
-                </Button.Content>
-            </Button>
-            <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,2.5,0,0" Height="32" Grid.Row="1">
-                <Button.Content>
-                    <Image Source="Mau.jpg"/>
-                </Button.Content>
-            </Button>
-            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,1,0,0" Height="32">
-                <Button.Content>
-                    <Image Source="Text.jpg"/>
-                </Button.Content>
-            </Button>
-            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,2.5,0,0" Height="32" Grid.Row="1">
-                <Button.Content>
-                    <Image Source="zoom.jpg"/>
-                </Button.Content>
-            </Button>
-            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="3" Margin="1,1,0,0" Height="32">
-                <Button.Content>
-                    <Image Source="but.jpg"/>
-                </Button.Content>
-            </Button>
-            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="3" Margin="1,2.5,0,0" Height="32" Grid.Row="1">
-                <Button.Content>
-                    <Image Source="setColor.jpg"/>
-                </Button.Content>
-            </Button>
-            <Separator Grid.Column="4" HorizontalAlignment="Left" Height="66" Margin="10,2,0,0" Grid.RowSpan="2" Style="{DynamicResource SimpleSeparator}" VerticalAlignment="Top" Width="2"/>
-            <Grid Grid.Column="5" HorizontalAlignment="Left" Height="70" Margin="4,1,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="107" Background="#FFC1A2A2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
-                    <RowDefinition Height="35"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="35"/>
-                    <ColumnDefinition Width="35"/>
-                    <ColumnDefinition Width="35"/>
-                </Grid.ColumnDefinitions>
-                <Button HorizontalAlignment="Left" Width="32" Margin="1,0,0,2" Click="Button_Click_line">
-                    <Button.Content>
-                        <Image Source="thang.jpg"/>
-                    </Button.Content>
-                </Button>
-                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,0,1,1" Height="32" Click="Rectangle_Click">
-                    <Button.Content>
-                        <Image Source="cn.jpg"/>
-                    </Button.Content>
-                </Button>
-                <Button HorizontalAlignment="Left" Width="32" Grid.Column="2" Margin="1,0,0,3" Height="32" VerticalAlignment="Bottom" Click="Ellip_Click">
-                    <Button.Content>
-                        <Image Source="tron.jpg"/>
-                    </Button.Content>
-                </Button>
-                <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Height="32">
-                    <Button.Content>
-                        <Image Source="tamgiacvuong.jpg"/>
-                    </Button.Content>
-                </Button>
-                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Grid.Column="1" Height="32">
-                    <Button.Content>
-                        <Image Source="left.jpg"/>
-                    </Button.Content>
-                </Button>
-                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,1,1,0" Grid.Row="1" Height="32">
-                    <Button.Content>
-                        <Image Source="right.jpg"/>
-                    </Button.Content>
-                </Button>
-            </Grid>
-            <Grid Grid.Column="7" HorizontalAlignment="Left" Height="60" Margin="2,5,1,5" Grid.RowSpan="2" VerticalAlignment="Top" Width="243">
-                <Grid.ColumnDefinitions>
+            <Menu Height="24" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Margin="-0.317,0,3.86,0" Background="#FFCFC2C2" BorderThickness="1">
+                <Menu.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleX="0.807"/>
+                        <RotateTransform/>
+                        <TranslateTransform X="0.486"/>
+                    </TransformGroup>
+                </Menu.RenderTransform>
+                <MenuItem Header="File" FontSize="13.333">
+                    <MenuItem Header="New" HorizontalAlignment="Left" Width="162.666666666667" Click="New_Click"/>
+                    <MenuItem Header="Open" HorizontalAlignment="Left" Width="162.666666666667" Click="Open_Click"/>
+                    <MenuItem Header="Save" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_Click" />
+                    <MenuItem Header="Save as" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.SaveAs"/>
+                    <Separator HorizontalAlignment="Left" Width="162.666666666667"/>
+                    <MenuItem Header="Help" HorizontalAlignment="Left" Width="162.666666666667"/>
+                    <MenuItem Header="Exit" HorizontalAlignment="Left" Width="162.666666666667"  Click="Exit_Click"/>
+                </MenuItem>
+                <MenuItem Header="Edit" FontSize="13.333">
+                    <MenuItem Header="Undo" HorizontalAlignment="Left" Width="162.666666666667"  Click="Undo_Click"/>
+                    <MenuItem Header="Cut" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Cut"/>
+                    <MenuItem Header="Copy" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Copy"/>
+                    <MenuItem Header="Paste" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Paste"/>
+                    <MenuItem Header="Delete" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Delete"/>
+                </MenuItem>
+            </Menu>
+            <Grid Height="71" Margin="2,26,3,0" VerticalAlignment="Top" Background="#FFCBC2C2">
+                <Grid.ColumnDefinitions >
                     <ColumnDefinition Width="60"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="0*"/>
+                    <ColumnDefinition Width="33"/>
+                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="115"/>
+                    <ColumnDefinition Width="22"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button IsEnabled="True" HorizontalAlignment="Left" Height="58" Margin="1,1,1,1" VerticalAlignment="Top" Width="48">
-                    <Button.Content>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Name="btn_Select" VerticalAlignment="Top" Height="71" Grid.RowSpan="2" Click="Button_Click_select" GroupName="Tool" IsChecked="True" Unchecked="btn_Select_Unchecked" Margin="0,0,2,0">
+                    <RadioButton.Content>
                         <StackPanel>
-                            <Label Name="Color" Height="38" Width="38" BorderThickness="1" BorderBrush="Black" Background="Black">
-                                <Label.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="More Color">
-                                        </MenuItem>
-                                    </ContextMenu>
-                                </Label.ContextMenu>
-                            </Label>
-                            <TextBlock Text="Fill" TextAlignment="Center"></TextBlock>
+                            <Image Source="Select.jpg" Height="45" Width="50"/>
+                            <TextBlock Text="Select" TextAlignment="Center"/>
                         </StackPanel>
-                    </Button.Content>
-                </Button>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,1,0,0" Height="32" GroupName="Tool" Click="erase_Click" Unchecked="RadioButton_Unchecked">
+                    <RadioButton.Content>
+                        <Image Source="Tay.jpg"/>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,2.5,0,0" Height="32" Grid.Row="1" GroupName="Tool">
+                    <RadioButton.Content>
+                        <Image Source="Mau.jpg"/>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,1,0,0" Height="32" GroupName="Tool">
+                    <RadioButton.Content>
+                        <Image Source="Text.jpg"/>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,2.5,0,0" Height="32" Grid.Row="1" GroupName="Tool">
+                    <RadioButton.Content>
+                        <Image Source="zoom.jpg"/>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="3" Margin="1,1,0,0" Height="32" GroupName="Tool">
+                    <RadioButton.Content>
+                        <Image Source="but.jpg"/>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="3" Margin="1,2.5,0,0" Height="32" Grid.Row="1" GroupName="Tool">
+                    <RadioButton.Content>
+                        <Image Source="setColor.jpg"/>
+                    </RadioButton.Content>
+                </RadioButton>
+                <Separator Grid.Column="4" HorizontalAlignment="Left" Height="66" Margin="10,2,0,0" Grid.RowSpan="2" Style="{DynamicResource SimpleSeparator}" VerticalAlignment="Top" Width="2"/>
+                <Grid Grid.Column="5" HorizontalAlignment="Left" Height="70" Margin="4,1,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="107" Background="#FFC1A2A2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Name="button" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" Width="32" Margin="1,0,0,2" Click="Button_Click_line" GroupName="Tool">
+                        <RadioButton.Content>
+                            <Image Source="thang.jpg"/>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,0,1,1" Height="32" Click="Rectangle_Click" GroupName="Tool">
+                        <RadioButton.Content>
+                            <Image Source="cn.jpg"/>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" Width="32" Grid.Column="2" Margin="1,0,0,3" Height="32" VerticalAlignment="Bottom" Click="Ellip_Click" GroupName="Tool">
+                        <RadioButton.Content>
+                            <Image Source="tron.jpg"/>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Height="32" GroupName="Tool">
+                        <RadioButton.Content>
+                            <Image Source="tamgiacvuong.jpg"/>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Grid.Column="1" Height="32" GroupName="Tool">
+                        <RadioButton.Content>
+                            <Image Source="left.jpg"/>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,1,1,0" Grid.Row="1" Height="32" GroupName="Tool">
+                        <RadioButton.Content>
+                            <Image Source="right.jpg"/>
+                        </RadioButton.Content>
+                    </RadioButton>
+                </Grid>
+                <Grid Grid.Column="7" HorizontalAlignment="Left" Height="60" Margin="2,5,1,5" Grid.RowSpan="2" VerticalAlignment="Top" Width="243">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="0"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" Height="58" Margin="1,1,0,0" VerticalAlignment="Top" Width="48" GroupName="Fill" IsChecked="True">
+                        <RadioButton.Content>
+                            <StackPanel>
+                                <Label Name="Color" Height="38" Width="38" BorderThickness="1" BorderBrush="Black" Background="White">
+                                    <Label.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="More Color">
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Label.ContextMenu>
+                                </Label>
+                                <TextBlock Text="Fill" TextAlignment="Center"></TextBlock>
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" IsEnabled="True" HorizontalAlignment="Left" Height="58" Margin="1,1,0,0" VerticalAlignment="Top" Width="48" Grid.Column="1" GroupName="colorBoder" IsChecked="True">
+                        <RadioButton.Content>
+                            <StackPanel>
+                                <Label Name="noFill" Height="38" Width="38" BorderThickness="1" BorderBrush="Black" Background="Black">
+                                    <Label.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="More Color">
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Label.ContextMenu>
+                                </Label>
+                                <TextBlock Text="Boder" TextAlignment="Center"></TextBlock>
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                </Grid>
+                <Separator Grid.Column="6" HorizontalAlignment="Left" Height="66" Margin="10,2,0,0" Grid.RowSpan="2" Style="{DynamicResource SimpleSeparator}" VerticalAlignment="Top" Width="2"/>
             </Grid>
-            <Separator Grid.Column="6" HorizontalAlignment="Left" Height="66" Margin="10,2,0,0" Grid.RowSpan="2" Style="{DynamicResource SimpleSeparator}" VerticalAlignment="Top" Width="2"/>
-
-        </Grid>
-        <Grid Background="#FFCBC2C2" Margin="3,100,0,0" HorizontalAlignment="Left" Width="97" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="9*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="28*"/>
-                <RowDefinition Height="29*"/>
-                <RowDefinition Height="28*"/>
-                <RowDefinition Height="210*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="31*"/>
-                <ColumnDefinition Width="32*"/>
-                <ColumnDefinition Width="26*"/>
-            </Grid.ColumnDefinitions>
-            <ListBox Name="listSize" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="90" Grid.RowSpan="3" VerticalAlignment="Top" Width="90" Margin="3,10,0,0" SelectedIndex="0" Background="#FFC79090" BorderBrush="#FF0843AE" Foreground="#FFCF4848">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Background" Value="White"></Setter>
-                        <Setter Property="Margin" Value="1"></Setter>
-                        <Setter Property="Width" Value="84"></Setter>
-                        <Setter Property="Height" Value="19"></Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBoxItem>
-                    <ListBoxItem.Content >
-                        <Image Source="1x.jpg" Width="80" Height="20"></Image>
-                    </ListBoxItem.Content>
-                </ListBoxItem >
-                <ListBoxItem>
-                    <ListBoxItem.Content>
-                        <Image Source="2x.jpg" Width="80" Height="20"></Image>
-                    </ListBoxItem.Content>
-                </ListBoxItem>
-                <ListBoxItem >
-                    <ListBoxItem.Content>
-                        <Image Source="3x.jpg" Width="80" Height="20"></Image>
-                    </ListBoxItem.Content>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <ListBoxItem.Content>
-                        <Image Source="4x.jpg" Width="80" Height="20"></Image>
-                    </ListBoxItem.Content>
-                </ListBoxItem>
-            </ListBox>
-        </Grid>
-        <StatusBar Margin="2,0.639,0,0.327" Grid.Row="1" Name="Status_bar">
-            <StatusBarItem Width="76.5" HorizontalAlignment="Left" Margin="0,1">
-                <TextBlock Height="18.96" Width="69.933" VerticalAlignment="Center" TextAlignment="Center"> Ready</TextBlock>
-            </StatusBarItem>
-            <ProgressBar Value="30" Height="33" Width="130.5"></ProgressBar>
-            <StatusBarItem Name="MousePosition" Height="39" VerticalAlignment="Top" Width="1090.832"/>
-        </StatusBar>
-            <Canvas Margin="106,102,3,0" ClipToBounds="True"
-		Background="White" Name="MyCanvas" MouseMove="Mycanvas_Mouse_Move"
+            <StackPanel Background="#FFCBC2C2" Margin="3,104,0,0" HorizontalAlignment="Left" >
+                <ListBox Name="listSize" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="90" Grid.RowSpan="3" VerticalAlignment="Top" Width="90" Margin="3,10,3,0" SelectedIndex="0" Background="#FFC79090" BorderBrush="#FF0843AE" Foreground="#FFCF4848">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Background" Value="White"></Setter>
+                            <Setter Property="Margin" Value="1"></Setter>
+                            <Setter Property="Width" Value="84"></Setter>
+                            <Setter Property="Height" Value="19"></Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBoxItem>
+                        <ListBoxItem.Content >
+                            <Image Source="1x.jpg" Width="80" Height="20"></Image>
+                        </ListBoxItem.Content>
+                    </ListBoxItem >
+                    <ListBoxItem>
+                        <ListBoxItem.Content>
+                            <Image Source="2x.jpg" Width="80" Height="20"/>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem >
+                        <ListBoxItem.Content>
+                            <Image Source="3x.jpg" Width="80" Height="20"></Image>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <ListBoxItem.Content>
+                            <Image Source="4x.jpg" Width="80" Height="20"></Image>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                </ListBox>
+            </StackPanel>
+            <StatusBar Margin="2,0.639,0,0.327" Grid.Row="1" Name="Status_bar">
+                <StatusBarItem Width="76.5" HorizontalAlignment="Left" Margin="0,1">
+                    <TextBlock Height="18.96" Width="69.933" VerticalAlignment="Center" TextAlignment="Center"> Ready</TextBlock>
+                </StatusBarItem>
+                <ProgressBar Value="30" Height="33" Width="130.5"></ProgressBar>
+                <StatusBarItem Name="MousePosition" Height="39" VerticalAlignment="Top" Width="1066"/>
+            </StatusBar>
+            <ScrollViewer Margin="102,104,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="1260" MaxHeight="555" HorizontalAlignment="Left" VerticalAlignment="Top" MinWidth="1170" MinHeight="522">
+                <Canvas ClipToBounds="False"
+		           Background="White" Name="MyCanvas" MouseMove="Mycanvas_Mouse_Move"
                    MouseLeftButtonDown="Mycanvas_Mouse_Down"
                    MouseLeftButtonUp="Mycanvas_Mouse_Up"
-                   
-                   Cursor="Cross" ScrollViewer.CanContentScroll="True" 
-                    AllowDrop="True"
+                   Cursor="Cross"
+                    ScrollViewer.CanContentScroll="False"
 		>
-            <Rectangle
+                    <Rectangle
                 x:Name="selectionRectangle"
                 Visibility="Collapsed"
-                Fill="#220000FF"
+                Fill="White"
                 StrokeDashArray="3 2"
-                Stroke="Blue"
-                StrokeThickness="2" Cursor="SizeAll"
+                Stroke="Blue"                
+                StrokeThickness="1" Cursor="SizeAll"
                 MouseLeftButtonDown="selectionRectangle_MouseLeftButtonDown"
-                MouseLeftButtonUp="selectionRectangle_MouseLeftButtonUp"
-                MouseMove="selectionRectangle_MouseMove"
-                />
-            <CheckBox Content="CheckBox" Height="21" Canvas.Left="200" Canvas.Top="84" Width="158" AllowDrop="True"/>
-            <Canvas.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Clear" Click="New_Click"/>
-                    <MenuItem Header="Open" Click="Open_Click"/>
-                </ContextMenu>
-            </Canvas.ContextMenu>
-        </Canvas>
-    </Grid>
+                >
+                        <Rectangle.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Copy"></MenuItem>
+                                <MenuItem Header="Delete"></MenuItem>
+                            </ContextMenu>
+                        </Rectangle.ContextMenu>
+                    </Rectangle>
+                    <Rectangle Name="erase_rec"
+                       Fill="White"
+                       Visibility="Collapsed"
+                       >
+                    </Rectangle>
+                    <ToolBarPanel Height="152" Canvas.Left="258" Canvas.Top="226" Width="666"/>
+                    <Canvas.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Clear" Click="New_Click"/>
+                            <MenuItem Header="Open" Click="Open_Click"/>
+                        </ContextMenu>
+                    </Canvas.ContextMenu>
+                </Canvas>
+            </ScrollViewer>
+
+
+
+        </Grid>
+    </ScrollViewer>
 </Window>
