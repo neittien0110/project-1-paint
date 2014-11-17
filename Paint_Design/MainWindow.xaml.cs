@@ -21,12 +21,18 @@ namespace Paint_Design
         public List<MyEllip> ellip = new List<MyEllip>();
         public List<Polygon> polygon = new List<Polygon>();
         public List<MyRectangle> rectangle = new List<MyRectangle>();
-        public Point point_start = new Point();
+        public Point point_start = new Point(); 
+        public Point pointdrag = new Point();
         public Boolean ClickDown = new Boolean();
+        public Boolean Draging = new Boolean();
+        public double dpi = 96d;
+        Image img = new Image();
         public MainWindow()
         {
             InitializeComponent();
             ClickDown = false;
+            status.setTool("Select");
+            Button_Click_select(btn_Select, new RoutedEventArgs());
         }
         /// <summary>
         /// Xóa hết các hình trên panel Canvas
@@ -36,6 +42,7 @@ namespace Paint_Design
             /// Xử lý sự kiện khi click vào MenuItem New
             /// Sử dụng hàm Clear() được dựng sẵn để xóa các đối tượng trong MyCanvas
             MyCanvas.Children.Clear();
+            selectionRectangle.Visibility = Visibility.Collapsed;
             MyCanvas.Children.Add(selectionRectangle);
         }
         /// <summary>
@@ -53,7 +60,7 @@ namespace Paint_Design
             ///- Thực hiện : File image được chọn được load trên MyCanvas
             ///- Quá trình:
             /// <ul>
-            /// <li> Tạo dialog</li>          
+            /// <li> Tạo dialog</li>        
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.Filter = "All Image File | *.*";
             dlg.Multiselect = false;
@@ -64,6 +71,9 @@ namespace Paint_Design
                     /// <li> Load file image</li>
                     ImageSource img = new BitmapImage(new Uri(dlg.FileName));
                     Image bitmap = new Image { Source = img };
+                    System.Console.WriteLine(bitmap.Height);
+                    MyCanvas.Height = img.Height;
+                    MyCanvas.Width = img.Width;
                     Canvas.SetLeft(bitmap, 0);
                     Canvas.SetTop(bitmap, 0);
                     /// <li> add image vào MyCanvas</li>
@@ -128,11 +138,13 @@ namespace Paint_Design
             line.Add(_line);
             ///- Thêm vào danh sách đường thẳng ban đầu
             status.setTool("line");
-            
+            selectionRectangle.Visibility = Visibility.Collapsed;
         }
         public void Button_Click_select(object sender, RoutedEventArgs e)
         {
             status.setTool("Select");
+            Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
+            selectionRectangle.Fill = null;
         }
         // Xu ly su kien MouseMove tren panel Canvas
         /// <summary>
@@ -196,14 +208,50 @@ namespace Paint_Design
                 else Canvas.SetLeft(myrec.rectangle, e.GetPosition(MyCanvas).X);
             }
             if (status.getTool() == "Select")
-                if (ClickDown)
             {
-                selectionRectangle.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
-                selectionRectangle.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
-                selectionRectangle.Width = Math.Abs(x - point_start.X);
-                selectionRectangle.Height = Math.Abs(y - point_start.Y);
-                if (selectionRectangle.Visibility != Visibility.Visible)
-                    selectionRectangle.Visibility = Visibility.Visible;  
+                if (ClickDown)
+                {
+                    selectionRectangle.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
+                    selectionRectangle.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
+                    selectionRectangle.Width = Math.Abs(x - point_start.X);
+                    selectionRectangle.Height = Math.Abs(y - point_start.Y);
+                    if (selectionRectangle.Visibility != Visibility.Visible)
+                        selectionRectangle.Visibility = Visibility.Visible;
+                }
+            }
+            if (status.getTool() != "Selected")
+            {
+                img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
+                img.Cursor = Cursors.Cross;
+            }
+            if (status.getTool() == "Draging")
+            {
+                Canvas.SetLeft(selectionRectangle, x - pointdrag.X-1);
+                Canvas.SetLeft(img, x-pointdrag.X);
+                Canvas.SetTop(selectionRectangle, y - pointdrag.Y-1);
+                Canvas.SetTop(img, y-pointdrag.Y);
+                img.Visibility = Visibility.Visible;
+            }
+            if ((status.getTool() == "erase")||((status.getTool() == "erasing")))
+                if ((x>0)&&(y>0))
+            {
+                Canvas.SetZIndex(erase_rec, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count-1])+1);
+                erase_rec.Width = (listSize.SelectedIndex + 1) * 4;
+                erase_rec.Height = (listSize.SelectedIndex + 1) * 4;
+                Canvas.SetLeft(erase_rec, x - erase_rec.Width/2);
+                Canvas.SetTop(erase_rec, y - erase_rec.Width/2);
+                erase_rec.Visibility = Visibility.Visible;
+            }
+            if (status.getTool() == "erasing")
+                if ((x > 0) && (y > 0))
+            {
+                Rectangle xoa = new Rectangle();
+                Canvas.SetLeft(xoa, Canvas.GetLeft(erase_rec));
+                Canvas.SetTop(xoa, Canvas.GetTop(erase_rec));
+                xoa.Width = erase_rec.Width;
+                xoa.Height = erase_rec.Height;
+                xoa.Fill = Brushes.White;
+                MyCanvas.Children.Add(xoa);
             }
             MousePosition.Content = (x.ToString() + "," + y.ToString());
             /// </ul>
@@ -253,6 +301,24 @@ namespace Paint_Design
                 point_start.Y = e.GetPosition(MyCanvas).Y;
                 ClickDown = true;
             }
+            if (status.getTool() == "Selected")
+            {
+                selectionRectangle.Height = 0;
+                selectionRectangle.Width = 0;
+                selectionRectangle.Visibility = Visibility.Collapsed;
+                img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
+                img.Cursor = Cursors.Cross;
+                status.setTool("Select");
+                point_start.X = e.GetPosition(MyCanvas).X;
+                point_start.Y = e.GetPosition(MyCanvas).Y;
+                ClickDown = true;
+                img=new Image();
+            }
+            if (status.getTool()=="erase")
+            {
+                Xoa(Canvas.GetLeft(erase_rec), Canvas.GetTop(erase_rec), erase_rec.Height, erase_rec.Width);
+                status.setTool("erasing");
+            }
             
         }
         // Xu ly su kien MouseUp tren panel Canvas
@@ -275,15 +341,57 @@ namespace Paint_Design
                  MyRectangle _rec = new MyRectangle();
                  rectangle.Add(_rec);
              }
-             if (status.getTool() == "Select")
-                 if (ClickDown)
+             if ((ClickDown==true)&&(status.getTool() == "Select"))
              {
                  ClickDown = false;
-                 if (selectionRectangle.Visibility != Visibility.Visible)
-                selectionRectangle.Visibility = Visibility.Visible;
-                 Rect rect = new Rect(Canvas.GetLeft(selectionRectangle), Canvas.GetTop(selectionRectangle), selectionRectangle.Width, selectionRectangle.Height);
+                 if ((selectionRectangle.Width > 2) && (selectionRectangle.Height > 2))
+                 {
+
+                     status.setTool("Selected");
+              
+                     Rect bounds = VisualTreeHelper.GetDescendantBounds(MyCanvas);
+                     RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, PixelFormats.Default);
+                     DrawingVisual dv = new DrawingVisual();
+                     using (DrawingContext dc = dv.RenderOpen())
+                     {
+                         VisualBrush vb = new VisualBrush(MyCanvas);
+                         dc.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
+                     }
+
+                     rtb.Render(dv);
+                     CroppedBitmap cropbmt = new CroppedBitmap(rtb, new Int32Rect((int)Canvas.GetLeft(selectionRectangle) + 1, (int)Canvas.GetTop(selectionRectangle) + 1, (int)selectionRectangle.Width - 2, (int)selectionRectangle.Height - 2));
+                     img = new Image { Source = cropbmt };
+                     Canvas.SetLeft(img, Canvas.GetLeft(selectionRectangle) + 1);
+                     Canvas.SetTop(img, Canvas.GetTop(selectionRectangle) + 1);
+                     double width = selectionRectangle.Width;
+                     double height = selectionRectangle.Height;
+                     img.MouseLeftButtonDown += selectionRectangle_MouseLeftButtonDown;
+                     Xoa(Canvas.GetLeft(selectionRectangle) + 1, Canvas.GetTop(selectionRectangle) + 1, width - 2, height - 2);
+                     img.Cursor = Cursors.SizeAll;
+                     MyCanvas.Children.Add(img);
+                     Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(img) + 2);
+                     selectionRectangle.Fill = null;
+                 }
+             }
+             if (status.getTool() == "Draging")
+             {
                  status.setTool("Selected");
-            }
+             }
+             if (status.getTool() == "erasing")
+             {
+                  status.setTool("erase");
+             }
+        }
+
+        private void Xoa(double p1, double p2, double width, double height)
+        {
+            Rectangle xoa = new Rectangle();
+            Canvas.SetLeft(xoa, p1);
+            Canvas.SetTop(xoa, p2);
+            xoa.Width = width;
+            xoa.Height = height;
+            xoa.Fill = Brushes.White;
+            MyCanvas.Children.Add(xoa);
         }
 #endregion    
         public void Undo_Click(object sender, RoutedEventArgs e)
@@ -299,23 +407,45 @@ namespace Paint_Design
             MyEllip ell = new MyEllip();
             ellip.Add(ell);
             status.setTool("ellip");
+            selectionRectangle.Visibility = Visibility.Collapsed;
         }
         public void Rectangle_Click(object sender, RoutedEventArgs e)
         {
             MyRectangle rec = new MyRectangle();
             rectangle.Add(rec);
             status.setTool("rectangle");
+            selectionRectangle.Visibility = Visibility.Collapsed;
         }
-
+        public void erase_Click(object sender, RoutedEventArgs e)
+        {
+            status.setTool("erase");
+        }
         private void selectionRectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-           
+            
+            status.setTool("Draging");
+            point_start.X = e.GetPosition(MyCanvas).X;
+            point_start.Y = e.GetPosition(MyCanvas).Y;
+            MyCanvas.Children[MyCanvas.Children.Count - 2].Visibility = Visibility.Visible;
+            pointdrag.X = point_start.X - Canvas.GetLeft(selectionRectangle);
+            pointdrag.Y = point_start.Y - Canvas.GetTop(selectionRectangle);
         }
-        private void selectionRectangle_MouseMove(object sender, MouseEventArgs e)
+
+        private void btn_Select_Unchecked(object sender, RoutedEventArgs e)
         {
-        private void selectionRectangle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
+            selectionRectangle.Visibility = Visibility.Collapsed;
+            img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
+            img.Cursor = Cursors.Cross;
+            ClickDown = false;
+            img = new Image();
         }
-       
+
+        private void RadioButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            erase_rec.Visibility = Visibility.Collapsed;
+            erase_rec.Height = 0;
+            erase_rec.Width = 0;
+        }
+               
     }
 }
