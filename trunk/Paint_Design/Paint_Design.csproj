@@ -62,8 +62,14 @@
     </ApplicationDefinition>
     <Compile Include="MyEllip.cs" />
     <Compile Include="MyRectangle.cs" />
+    <Compile Include="PickColor.xaml.cs">
+      <DependentUpon>PickColor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PropertiesShape.cs" />
     <Compile Include="Status.cs" />
+    <Compile Include="Resize.xaml.cs">
+      <DependentUpon>Resize.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,9 +82,17 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PickColor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Simple Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resize.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +145,9 @@
     <Resource Include="2x.jpg" />
     <Resource Include="3x.jpg" />
     <Resource Include="4x.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resize.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
