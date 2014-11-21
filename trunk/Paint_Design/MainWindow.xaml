@@ -6,7 +6,8 @@
         >
     <ScrollViewer Name="SCW" VerticalScrollBarVisibility="Hidden" Padding="2" HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="0" MouseMove="Mycanvas_Mouse_Move" ScrollViewer.CanContentScroll="False"
-			MouseLeftButtonUp="Mycanvas_Mouse_Up" MinWidth="700" MinHeight="500" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+              MouseLeftButtonUp="Mycanvas_Mouse_Up"
+			MinWidth="700" MinHeight="500" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="40"/>
@@ -69,7 +70,7 @@
                 <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,1,0,0" Height="32" GroupName="Tool" Click="erase_Click" Unchecked="RadioButton_Unchecked">
                     <Image Source="Tay.jpg"/>
                 </RadioButton>
-                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,2.5,0,0" Height="32" Grid.Row="1" GroupName="Tool">
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,2.5,0,0" Height="32" Grid.Row="1" GroupName="Tool" Click="NotInVersion">
                     <Image Source="Mau.jpg"/>
                 </RadioButton>
                 <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,1,0,0" Height="32" GroupName="Tool" Click="Text_Click">
@@ -97,8 +98,8 @@
                     <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Height="32" GroupName="Tool" Click="Ellip_Click">
                         <Image Source="tron.jpg"/>
                     </RadioButton>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Grid.Column="1" Height="32" GroupName="Tool">
-                        <Image Source="left.jpg"/>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Grid.Column="1" Height="32" GroupName="Tool" Click="NotInVersion">
+                        <Image Source="tamgiacvuong.jpg"/>
                     </RadioButton>
                 </Grid>
                 <Grid Grid.Column="6" HorizontalAlignment="Left" Height="60" Margin="2,5,1,5" Grid.RowSpan="2" VerticalAlignment="Top" Width="243">
@@ -164,13 +165,13 @@
                 </StatusBarItem>
                 <StatusBarItem x:Name="MousePosition" Height="39" VerticalAlignment="Top" Width="1066"/>
             </StatusBar>
-            <ScrollViewer ClipToBounds="True" Margin="102,104,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="1260" MaxHeight="555" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Canvas ClipToBounds="True"
+            <ScrollViewer Name="ScwCanvas" ClipToBounds="True" Margin="102,104,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="1260" MaxHeight="555" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Canvas
 					Background="White" x:Name="MyCanvas" MouseMove="Mycanvas_Mouse_Move"
 					MouseLeftButtonDown="Mycanvas_Mouse_Down"
 					MouseLeftButtonUp="Mycanvas_Mouse_Up"
 					Cursor="Cross"
-					ScrollViewer.CanContentScroll="False" Margin="0,0,3,3"
+					ScrollViewer.CanContentScroll="False" Margin="0,0,3,3" ClipToBounds="True"
 		>
                     <Canvas.ContextMenu>
                         <ContextMenu>
@@ -202,8 +203,9 @@
                                         <CommandBinding Command="ApplicationCommands.Delete"  CanExecute="del_CommandBinding_CanExecute" Executed="del_CommandBinding_Executed"/>
                                     </MenuItem.CommandBindings>
                                 </MenuItem>
-                    </ContextMenu>
-                        </Image.ContextMenu>
+                         <MenuItem Header="Paste" Click="Paste_Click"/>
+                     </ContextMenu>
+                     </Image.ContextMenu>
                     </Image>
                 </Canvas>
             </ScrollViewer>
