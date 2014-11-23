@@ -20,8 +20,8 @@ namespace Paint_Design
         public Status status = new Status();
         public Line line = new Line();
         public Polyline polyl = new Polyline();
-        public MyEllip ellip = new MyEllip();
-        public MyRectangle Myrectangle = new MyRectangle();
+        public Ellipse ellip = new Ellipse();
+        public Rectangle rectangle = new Rectangle();
         public Point point_start = new Point(); 
         public Point pointdrag = new Point();
         public Boolean ClickDown =false;
@@ -89,17 +89,15 @@ namespace Paint_Design
                 /// <ul>
                 ///  <li> setTool "ellipDraw" và khởi tạo </li>
                 status.setTool("ellipDraw");
-                ellip = new MyEllip();
+                ellip = new Ellipse();
                 /// <li> Set các thuộc tính cho ellip </li>
-                ellip.setX_Up(e.GetPosition(MyCanvas).X);
-                ellip.setY_Up(e.GetPosition(MyCanvas).Y);
-                ellip.ellip.Height = 1;
-                ellip.ellip.Width = 1;
-                ellip.ellip.Fill = new SolidColorBrush(FillColor);
-                ellip.ellip.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
-                ellip.ellip.Stroke = new SolidColorBrush(boderColor);
+                ellip.Height = 1;
+                ellip.Width = 1;
+                ellip.Fill = new SolidColorBrush(FillColor);
+                ellip.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
+                ellip.Stroke = new SolidColorBrush(boderColor);
                 /// <li> add ellip vào Pannel Canvas
-                MyCanvas.Children.Add(ellip.ellip);
+                MyCanvas.Children.Add(ellip);
                 /// </ul>
                 /// </li>
 
@@ -109,21 +107,33 @@ namespace Paint_Design
             {
                 /// <ul>
                 ///  <li> setTool "rectangleDraw" và khởi tạo </li>
-                Myrectangle = new MyRectangle();
+                rectangle = new Rectangle();
                 status.setTool("rectangleDraw");
                 /// <li> Set các thuộc tính cho rectangle </li>
-                Myrectangle.setX_Up(e.GetPosition(MyCanvas).X);
-                Myrectangle.setY_Up(e.GetPosition(MyCanvas).Y);
-                Myrectangle.rectangle.Fill = new SolidColorBrush(FillColor);
-                Myrectangle.rectangle.Height = 1;
-                Myrectangle.rectangle.Width = 1;
-                Myrectangle.rectangle.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
-                Myrectangle.rectangle.Stroke = new SolidColorBrush(boderColor);
+                rectangle.Fill = new SolidColorBrush(FillColor);
+                rectangle.Height = 1;
+                rectangle.Width = 1;
+                rectangle.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
+                rectangle.Stroke = new SolidColorBrush(boderColor);
                 /// <li> add ellip vào Pannel Canvas
-                MyCanvas.Children.Add(Myrectangle.rectangle);
+                MyCanvas.Children.Add(rectangle);
                 /// </ul>
             }
 ///  </li>
+/// <li>> Xử lý khi trạng thái là Selected ( đã chọn) </li>
+            if (status.getTool() == "Selected")
+            {
+                selectionRectangle.Height = 0;
+                selectionRectangle.Width = 0;
+                selectionRectangle.Visibility = Visibility.Collapsed;
+                img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
+                img.Cursor = Cursors.Cross;
+                status.setTool("Select");
+                point_start.X = e.GetPosition(MyCanvas).X;
+                point_start.Y = e.GetPosition(MyCanvas).Y;
+                ClickDown = true;
+                img = new Image();
+            }
 /// <li>> Xử lý nếu công cụ đang được chọn là select </li>
             if (status.getTool() == "Select")
             {
@@ -164,20 +174,6 @@ namespace Paint_Design
                 /// -       Thêm vào panel Canvas
                 MyCanvas.Children.Add(text);
             }
-/// <li>> Xử lý khi trạng thái là Selected ( đã chọn) </li>
-            if (status.getTool() == "Selected")
-            {
-                selectionRectangle.Height = 0;
-                selectionRectangle.Width = 0;
-                selectionRectangle.Visibility = Visibility.Collapsed;
-                img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
-                img.Cursor = Cursors.Cross;
-                status.setTool("Select");
-                point_start.X = e.GetPosition(MyCanvas).X;
-                point_start.Y = e.GetPosition(MyCanvas).Y;
-                ClickDown = true;
-                img = new Image();
-            }
 /// <li>> Xử lý khi trạng thái là write</li>            
             if (status.getTool() == "write")
             {
@@ -213,37 +209,19 @@ namespace Paint_Design
             /// <li>Vẽ ellip </li>
             if (status.getTool() == "ellipDraw")
             {
-                ellip.ellip.Height = Math.Abs((y - ellip.getY_Up()));
-                ellip.ellip.Width = Math.Abs((x - ellip.getX_Up()));
-                if (e.GetPosition(MyCanvas).Y >ellip.getY_Up())
-                {
-                    Canvas.SetTop(ellip.ellip, ellip.getY_Up());
-                }
-                else Canvas.SetTop(ellip.ellip, e.GetPosition(MyCanvas).Y);
-                
-                if (e.GetPosition(MyCanvas).X > ellip.getX_Up())
-                {
-                    Canvas.SetLeft(ellip.ellip, ellip.getX_Up());
-                }
-                else Canvas.SetLeft(ellip.ellip, e.GetPosition(MyCanvas).X);
+                ellip.Height = Math.Abs(y - point_start.Y);
+                ellip.Width = Math.Abs(x - point_start.X);
+                ellip.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
+                ellip.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
             }
             /// <li> Vẽ hình chữ nhật </li>
             if (status.getTool() == "rectangleDraw")
             {
 
-                Myrectangle.rectangle.Height = Math.Abs((y - Myrectangle.getY_Up()));
-                Myrectangle.rectangle.Width = Math.Abs((x - Myrectangle.getX_Up()));
-                if (e.GetPosition(MyCanvas).Y > Myrectangle.getY_Up())
-                {
-                    Canvas.SetTop(Myrectangle.rectangle, Myrectangle.getY_Up());
-                }
-                else Canvas.SetTop(Myrectangle.rectangle, e.GetPosition(MyCanvas).Y);
-
-                if (e.GetPosition(MyCanvas).X > Myrectangle.getX_Up())
-                {
-                    Canvas.SetLeft(Myrectangle.rectangle, Myrectangle.getX_Up());
-                }
-                else Canvas.SetLeft(Myrectangle.rectangle, e.GetPosition(MyCanvas).X);
+                rectangle.Height = Math.Abs(y - point_start.Y);
+                rectangle.Width = Math.Abs(x - point_start.X);
+                rectangle.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
+                rectangle.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
             }
             /// <li> Nếu trạng thái là "Select" </li>
             if (status.getTool() == "Selecting")

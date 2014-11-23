@@ -1,0 +1,28 @@
+﻿<Window x:Class="Paint_Design.PickColor"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      Name="pickcl"
+	Title="Edit Color" Width="330" Height="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="setColor.jpg">
+
+    <Grid Background="Bisque" Width="324" Height="272">
+        <Slider Name="A_Slider" HorizontalAlignment="Left" Height="27" Margin="50,95,0,0" VerticalAlignment="Top" Width="210" Maximum="255" ValueChanged="Slider_ValueChanged" SmallChange="1"/>
+        <Slider Name="R_Slider" HorizontalAlignment="Left" Height="27" Margin="50,129,0,0" VerticalAlignment="Top" Width="210" Maximum="255" ValueChanged="Slider_ValueChanged" SmallChange="1"/>
+        <Slider Name="G_Slider" HorizontalAlignment="Left" Height="27" Margin="50,163,0,0" VerticalAlignment="Top" Width="210" Maximum="255" ValueChanged="Slider_ValueChanged" SmallChange="1"/>
+        <Button Content="OK" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="69,231,0,0" Click="Btn_Ok_Click"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="159,231,0,0" VerticalAlignment="Top" Click="Button_Cancel_Click" Width="75"/>
+        <Rectangle HorizontalAlignment="Left" Height="62" Margin="50,19,0,0" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="White"/>
+        <Rectangle Name="tempColor" HorizontalAlignment="Left" Height="62" Margin="50,19,0,0" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#00000000"/>
+        <Slider Name="B_Slider" HorizontalAlignment="Left" Height="27" Margin="50,195,0,0" VerticalAlignment="Top" Width="210" ValueChanged="Slider_ValueChanged" Maximum="255" SmallChange="1"/>
+        <Label Content="A" HorizontalAlignment="Left" Height="27" Margin="10,95,0,0" VerticalAlignment="Top" Width="25"/>
+        <Label Content="R" HorizontalAlignment="Left" Height="27" Margin="10,129,0,0" VerticalAlignment="Top" Width="25"/>
+        <Label Content="G" HorizontalAlignment="Left" Height="27" Margin="10,163,0,0" VerticalAlignment="Top" Width="25"/>
+        <Label Content="B" HorizontalAlignment="Left" Height="27" Margin="10,195,0,0" VerticalAlignment="Top" Width="25"/>
+        <Label Name="A_Value" Content="0 %" HorizontalAlignment="Left" Height="27" Margin="276,95,0,0" VerticalAlignment="Top" Width="37"/>
+        <Label Name="R_Value" Content="0" HorizontalAlignment="Left" Height="27" Margin="276,129,0,0" VerticalAlignment="Top" Width="37"/>
+        <Label Name="G_Value" Content="0" HorizontalAlignment="Left" Height="27" Margin="276,163,0,0" VerticalAlignment="Top" Width="37"/>
+        <Label Name="B_Value" Content="0" HorizontalAlignment="Left" Height="27" Margin="276,195,0,0" VerticalAlignment="Top" Width="37"/>
+
+    </Grid>
+</Window>
