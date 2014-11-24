@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Paint_Design.MainWindow"
         Title="MyPaint" x:Name="main" Height="700" Width="1288.5" Background="#FF8F8B8B" WindowStartupLocation="CenterScreen" Icon="but.jpg" SizeChanged="main_SizeChanged"
-        >
+        Closing="main_Closing">
     <ScrollViewer Name="SCW" VerticalScrollBarVisibility="Hidden" Padding="2" HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="0" MouseMove="Mycanvas_Mouse_Move" ScrollViewer.CanContentScroll="False"
               MouseLeftButtonUp="Mycanvas_Mouse_Up"
@@ -24,7 +24,7 @@
                 <MenuItem Header="File" FontSize="13.333">
                     <MenuItem Header="New" HorizontalAlignment="Left" Width="162.666666666667" Click="New_Click"/>
                     <MenuItem Header="Open" HorizontalAlignment="Left" Width="162.666666666667" Click="Open_Click"/>
-                    <MenuItem Header="Save" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_Click" />
+                    <MenuItem Name="SaveFile" Header="Save" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_Click" />
                     <Separator HorizontalAlignment="Left" Width="162.666666666667"/>
                     <MenuItem Header="Help" HorizontalAlignment="Left" Width="162.666666666667"/>
                     <MenuItem Header="Exit" HorizontalAlignment="Left" Width="162.666666666667"  Click="Exit_Click"/>

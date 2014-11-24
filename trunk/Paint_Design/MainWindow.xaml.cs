@@ -684,5 +684,18 @@ namespace Paint_Design
             status.setTool("Selected");
         }
         #endregion
+
+        private void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Bạn có muốn lưu lại không", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+            if (result == MessageBoxResult.Yes)
+            {
+                Save_Click(new Object(),new RoutedEventArgs());
+            }
+        }
     }
 }
