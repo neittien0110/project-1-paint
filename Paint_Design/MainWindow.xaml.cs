@@ -761,5 +761,9 @@ namespace Paint_Design
                 status.setSize(moresize.int_size);
             }
         }
+        private void info_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Name: My Paint \nAuthor : Hoàng Minh Tuấn \nTrường Đại học Bách Khoa Hà Nội\nLớp : CNTT2.01 - K57  ");
+        }
     }
 }

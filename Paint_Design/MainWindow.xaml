@@ -35,7 +35,6 @@
                             <CommandBinding Command="ApplicationCommands.Undo"  CanExecute="undo_CommandBinding_CanExecute" Executed="undo_CommandBinding_Executed"/>
                         </MenuItem.CommandBindings>
                     </MenuItem>
-                    <MenuItem Header="Cut" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Cut"/>
                     <MenuItem Header="Copy" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Copy"/>
                     <MenuItem Header="Paste" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Paste"/>
                     <MenuItem Header="Delete" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Delete">
@@ -45,6 +44,14 @@
                     </MenuItem>
                     <MenuItem Header="Resize" HorizontalAlignment="Left" Width="162.666666666667" Click="Resize_Click" />
                 </MenuItem>
+                <MenuItem Header="More">
+                    <MenuItem Header="Color" HorizontalAlignment="Left" Width="140">
+                    	<MenuItem Header="Fill" HorizontalAlignment="Left" Width="139.506666666667" Click="fill_Click"/>
+                    	<MenuItem Header="Boder" HorizontalAlignment="Left" Width="139.506666666667" Click="Boder_Click"/>
+                    </MenuItem>
+                    <MenuItem Header="Size" HorizontalAlignment="Left" Width="140" Click="More_Size_Click"/>
+                </MenuItem>
+                <MenuItem Header="Info" Click="info_Click"/>
             </Menu>
             <Grid Height="71" Margin="2,26,3,0" VerticalAlignment="Top" Background="#FFCBC2C2">
                 <Grid.ColumnDefinitions >
@@ -169,7 +176,8 @@
                 <StatusBarItem Width="186" HorizontalAlignment="Left" Margin="0,1">
                     <TextBlock Name="statusbar" Height="19" Width="176" VerticalAlignment="Center" TextAlignment="Center"><Run Text="Ready"/></TextBlock>
                 </StatusBarItem>
-                <StatusBarItem x:Name="MousePosition" Height="39" VerticalAlignment="Top" Width="1066"/>
+                <StatusBarItem x:Name="MousePosition" Height="39" VerticalAlignment="Top" Width="716" Margin="0,0,0,-5"/>
+                <StatusBarItem Content="Copyright @2014  By  Tuan94bg" Height="34" VerticalAlignment="Top" Width="209"/>
             </StatusBar>
             <ScrollViewer Name="ScwCanvas" ClipToBounds="True" Margin="102,104,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="1260" MaxHeight="555" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Canvas
