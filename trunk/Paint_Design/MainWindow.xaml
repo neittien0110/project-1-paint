@@ -23,8 +23,14 @@
                 </Menu.RenderTransform>
                 <MenuItem Header="File" FontSize="13.333">
                     <MenuItem Header="New" HorizontalAlignment="Left" Width="162.666666666667" Click="New_Click"/>
-                    <MenuItem Header="Open" HorizontalAlignment="Left" Width="162.666666666667" Click="Open_Click"/>
-                    <MenuItem Name="SaveFile" Header="Save" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_Click" />
+                    <MenuItem Header="Open" HorizontalAlignment="Left" Width="162.666666666667">
+                        <MenuItem Header="Open IMG" HorizontalAlignment="Left" Width="162.666666666667" Click="Open_Click"/>
+                        <MenuItem Header="Open XML" HorizontalAlignment="Left" Width="162.666666666667" Click="Open_XML_Click"/>
+                    </MenuItem>
+                    <MenuItem Header="Save" HorizontalAlignment="Left" Width="162.666666666667">
+                        <MenuItem Name="SaveFile" Header="To IMG" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_Click" />
+                        <MenuItem Name="SaveFileXML" Header="To XML" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_XML_Click" />
+                    </MenuItem>
                     <Separator HorizontalAlignment="Left" Width="162.666666666667"/>
                     <MenuItem Header="Help" HorizontalAlignment="Left" Width="162.666666666667"/>
                     <MenuItem Header="Exit" HorizontalAlignment="Left" Width="162.666666666667"  Click="Exit_Click"/>

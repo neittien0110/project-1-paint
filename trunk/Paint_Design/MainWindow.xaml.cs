@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -31,6 +32,7 @@ namespace Paint_Design
         public Boolean Dragging = new Boolean();
         public TextBox text;
         public BitmapSource source;
+        public Canvas savedCanvas = null;
         public double dpi = 96d;
         Image img = new Image();
         #endregion
@@ -147,7 +149,7 @@ namespace Paint_Design
                 polyl = new Polyline();
                 /// -       Set thuộc tính
                 polyl.Stroke = Brushes.White;
-                polyl.StrokeThickness = status.getSize()*2;
+                polyl.StrokeThickness = status.getSize() * 2;
                 polyl.Points.Add(point_start);
                 status.setTool("erasing");
                 MyCanvas.Children.Add(polyl);
@@ -279,7 +281,7 @@ namespace Paint_Design
                 /// <li> Nếu trạng thái là "polylinenext" </li>
                 if (status.getTool() == "polylinenext")
                 {
-                  polyl.Points.Add(new Point(x, y));
+                    polyl.Points.Add(new Point(x, y));
                 }
                 /// <li> Nếu trạng thái là "textDraw" </li>
                 if (status.getTool() == "textDraw")
@@ -340,7 +342,7 @@ namespace Paint_Design
                     status.setTool("Selected");
                     selectionRectangle.Visibility = Visibility.Hidden;
                     /// -       Xử lí để có Bitmapsource từ panel Mycanvas
-                    Rect bounds =new Rect(0, 0, MyCanvas.Width, MyCanvas.Height);
+                    Rect bounds = new Rect(0, 0, MyCanvas.Width, MyCanvas.Height);
                     double dpi = 96d;
                     RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, PixelFormats.Default);
                     DrawingVisual dv = new DrawingVisual();
@@ -404,8 +406,32 @@ namespace Paint_Design
             MyCanvas.Children.Add(xoa);
         }
         #endregion
-
-        #region Toolbar Click
+        #region Menu Click
+        /// <summary>
+        /// Menu Resize
+        /// </summary>
+        /// <param name="menuResize"></param>
+        /// <param name="e"></param>
+        public void Resize_Click(object menuResize, RoutedEventArgs e)
+        {
+            Resize resize = new Resize(MyCanvas.Width, MyCanvas.Height);
+            if ((bool)resize.ShowDialog())
+            {
+            }
+            if (resize.result)
+            {
+                if (resize.Mode == "Pixel")
+                {
+                    MyCanvas.Width = resize.width;
+                    MyCanvas.Height = resize.height;
+                }
+                if (resize.Mode == "Per")
+                {
+                    MyCanvas.Width = MyCanvas.Width * resize.width / 100;
+                    MyCanvas.Height = MyCanvas.Height * resize.height / 100;
+                }
+            }
+        }
         /// <summary>
         /// Xóa hết các hình trên panel Canvas
         /// </summary>
@@ -483,7 +509,7 @@ namespace Paint_Design
                     }
 
                     rtb.Render(dv);
-                   
+
                     using (FileStream fs = new FileStream(fileName, FileMode.Create))
                     {
                         BitmapEncoder encoder = new BmpBitmapEncoder();
@@ -498,6 +524,101 @@ namespace Paint_Design
                 }
 
         }
+        public void Copy_Click(object menuDel, RoutedEventArgs e)
+        {
+            Clipboard.SetImage(source);
+        }
+        /// <summary>
+        /// Lưu panel Canvas dưới dạng file XML
+        /// </summary>
+        /// <param name="menuPaste"></param>
+        /// <param name="e"></param>
+
+        public void Save_XML_Click(object menuPaste, RoutedEventArgs e)
+        {
+            /// Tạo SaveFileDialog
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "XML File|*.XAML";
+            dlg.FileName = "MyCanvas";
+            if ((bool)dlg.ShowDialog())
+                try
+                {
+                    /// Lưu MyCanvas dưới dạng XML tới FileName trong SaveFileDialog
+                    string mystrXAML = XamlWriter.Save(MyCanvas);
+                    FileStream filestream = File.Create(dlg.FileName);
+                    StreamWriter streamwriter = new StreamWriter(filestream);
+                    streamwriter.Write(mystrXAML);
+                    streamwriter.Close();
+                    filestream.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Can not save File" + ex.Message);
+                }
+        }
+        /// <summary>
+        ///  Mở file dạng XML
+        /// </summary>
+        /// <param name="menuPaste"></param>
+        /// <param name="e"></param>
+        public void Open_XML_Click(object menuPaste, RoutedEventArgs e)
+        {
+            /// <ul>
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "XML File | *.XAML";
+            dlg.Multiselect = false;
+            /// <li> Hiển thị dialog </li>
+            try
+            {
+                if ((bool)dlg.ShowDialog())
+                {
+                    /// <li> Load file XML</li>
+                    FileStream fs = new FileStream(@dlg.FileName, FileMode.Open);
+                    savedCanvas = System.Windows.Markup.XamlReader.Load(fs) as Canvas;
+                    fs.Close();
+                    /// <li> add các UIElement của Canvas trong file XML vào Mycanvas</li>
+
+                    New_Click(new object(), new RoutedEventArgs());
+                    while (savedCanvas.Children.Count > 2)
+                    {
+                        UIElement uie = savedCanvas.Children[2];
+                        savedCanvas.Children.Remove(uie);
+                        MyCanvas.Children.Add(uie);
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Can not open File" + ex.Message);
+            }
+            /// </ul>
+        }
+        /// <summary>
+        /// More size
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void More_Size_Click(object sender, RoutedEventArgs e)
+        {
+            MoreSize moresize = new MoreSize();
+            if ((bool)moresize.ShowDialog())
+            {
+            }
+            if (moresize.result)
+            {
+                listSize.SelectedItem = null;
+                status.setSize(moresize.int_size);
+            }
+        }
+        private void info_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Name: My Paint \nAuthor : Hoàng Minh Tuấn \nTrường Đại học Bách Khoa Hà Nội\nLớp : CNTT2.01 - K57  ");
+        }
+        #endregion
+        #region Toolbar Click
+        
         //Xu ly su kien cho Button line
         /// <summary>
         ///  Khi click vào Tool vẽ đường thằng . . .
@@ -566,9 +687,9 @@ namespace Paint_Design
             selectionRectangle.Visibility = Visibility.Collapsed;
             status.setTool("polyline");
         }
-        private void Delete_Click(object menuDel, RoutedEventArgs e)
+        public void Text_Click(object sender, RoutedEventArgs e)
         {
-            Xoa(Canvas.GetLeft(img), Canvas.GetTop(img), selectionRectangle.Width - 2, selectionRectangle.Height - 2);
+            status.setTool("text");
         }
 
         private void btn_Select_Unchecked(object btnSelect, RoutedEventArgs e)
@@ -597,7 +718,7 @@ namespace Paint_Design
         {
             PickColor pickcolor = new PickColor(status.getFillColor());
             if ((bool)pickcolor.ShowDialog())
-            {}
+            { }
             if (pickcolor.result) status.setFillColor(pickcolor.color);
             lColor.Background = new SolidColorBrush(status.getFillColor());
         }
@@ -610,7 +731,7 @@ namespace Paint_Design
         {
             PickColor pickcolor = new PickColor(status.getBoderColor());
             if ((bool)pickcolor.ShowDialog())
-            {}
+            { }
             if (pickcolor.result) status.setBoderColor(pickcolor.color);
             BoderColor.Background = new SolidColorBrush(status.getBoderColor());
         }
@@ -619,39 +740,11 @@ namespace Paint_Design
         /// </summary>
         /// <param name="menuDel"></param>
         /// <param name="e"></param>
-        public void Copy_Click(object menuDel, RoutedEventArgs e)
-        {
-            Clipboard.SetImage(source);
-        }
         private void NotInVersion(object button, RoutedEventArgs e)
         {
             MessageBox.Show("Sorry! Công cụ này chưa được xây dựng trong phiên bản hiện tại!");
         }
-        /// <summary>
-        /// Menu Resize
-        /// </summary>
-        /// <param name="menuResize"></param>
-        /// <param name="e"></param>
-        public void Resize_Click(object menuResize, RoutedEventArgs e)
-        {
-            Resize resize = new Resize(MyCanvas.Width, MyCanvas.Height);
-            if ((bool)resize.ShowDialog())
-            {
-            }
-            if (resize.result)
-            {
-                if (resize.Mode == "Pixel")
-                {
-                    MyCanvas.Width = resize.width;
-                    MyCanvas.Height = resize.height;
-                }
-                if (resize.Mode == "Per")
-                {
-                    MyCanvas.Width = MyCanvas.Width * resize.width / 100;
-                    MyCanvas.Height = MyCanvas.Height * resize.height / 100;
-                }
-            }
-        }
+        
         #endregion
         #region Event
         private void undo_CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -685,10 +778,7 @@ namespace Paint_Design
             if (main.Width < 1000) SCW.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
             if (main.Height < 500) SCW.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
         }
-        public void Text_Click(object sender, RoutedEventArgs e)
-        {
-            status.setTool("text");
-        }
+        
 
         private void del_CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -721,7 +811,7 @@ namespace Paint_Design
                 MyCanvas.Children.Add(img);
                 Canvas.SetLeft(selectionRectangle, 0);
                 Canvas.SetTop(selectionRectangle, 0);
-                MyCanvas.Width = MyCanvas.ActualWidth < img.Source.Width ? img.Source.Width:MyCanvas.ActualWidth;
+                MyCanvas.Width = MyCanvas.ActualWidth < img.Source.Width ? img.Source.Width : MyCanvas.ActualWidth;
                 MyCanvas.Height = MyCanvas.ActualHeight < img.Source.Height ? img.Source.Height : MyCanvas.ActualHeight;
                 selectionRectangle.Width = img.Source.Width;
                 selectionRectangle.Height = img.Source.Height;
@@ -755,27 +845,6 @@ namespace Paint_Design
         public void listSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             status.setSize((listSize.SelectedIndex + 1) * 2);
-        }
-        /// <summary>
-        /// More size
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void More_Size_Click(object sender, RoutedEventArgs e)
-        {
-            MoreSize moresize = new MoreSize();
-            if ((bool)moresize.ShowDialog())
-            {
-            }
-            if (moresize.result)
-            {
-                listSize.SelectedItem = null;
-                status.setSize(moresize.int_size);
-            }
-        }
-        private void info_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Name: My Paint \nAuthor : Hoàng Minh Tuấn \nTrường Đại học Bách Khoa Hà Nội\nLớp : CNTT2.01 - K57  ");
         }
         #endregion
     }
