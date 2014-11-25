@@ -136,7 +136,7 @@
                 <Separator Grid.Column="5" HorizontalAlignment="Left" Height="66" Margin="10,2,0,0" Grid.RowSpan="2" Style="{DynamicResource SimpleSeparator}" VerticalAlignment="Top" Width="2"/>
             </Grid>
             <StackPanel Background="#FFCBC2C2" Margin="3,104,0,0" HorizontalAlignment="Left" >
-                <ListBox x:Name="listSize" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="90" Grid.RowSpan="3" VerticalAlignment="Top" Width="90" Margin="3,10,3,0" SelectedIndex="0" Background="#FFC79090" BorderBrush="#FF0843AE" Foreground="#FFCF4848">
+                <ListBox  SelectionChanged="listSize_SelectionChanged" x:Name="listSize" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="88" Grid.RowSpan="3" VerticalAlignment="Top" Width="90" Margin="3,10,3,0" SelectedIndex="0" Background="#FFC79090" BorderBrush="#FF0843AE" Foreground="#FFCF4848" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
                             <Setter Property="Background" Value="White"/>
@@ -157,7 +157,13 @@
                     <ListBoxItem>
                         <Image Source="4x.jpg" Width="80" Height="20"/>
                     </ListBoxItem>
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="More" Click="More_Size_Click"></MenuItem>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                 </ListBox>
+      
             </StackPanel>
             <StatusBar Margin="2,0.639,3,5" Grid.Row="1" x:Name="Status_bar">
                 <StatusBarItem Width="186" HorizontalAlignment="Left" Margin="0,1">

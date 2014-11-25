@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 namespace Paint_Design
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for Resize.xaml
     /// </summary>
     public partial class Resize : Window
     {
