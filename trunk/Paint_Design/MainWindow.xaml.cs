@@ -17,12 +17,16 @@ namespace Paint_Design
     public partial class MainWindow : Window
     {
         #region Thuoctinh
+        /// <summary>
+        /// Trạng thái của phần mềm
+        /// </summary>
         public Status status = new Status();
         public Line line = new Line();
         public Polyline polyl = new Polyline();
         public Ellipse ellip = new Ellipse();
         public Rectangle rectangle = new Rectangle();
         public Point point_start = new Point();
+        public Point point_start_SCW = new Point();
         public Point pointdrag = new Point();
         public Boolean ClickDown = false;
         public Boolean Dragging = new Boolean();
@@ -30,14 +34,11 @@ namespace Paint_Design
         public BitmapSource source;
         public double dpi = 96d;
         Image img = new Image();
-        private Color FillColor = Color.FromArgb(Convert.ToByte(00), Convert.ToByte(00), Convert.ToByte(00), Convert.ToByte(00));
-        private Color boderColor = Color.FromArgb(Convert.ToByte(255), Convert.ToByte(00), Convert.ToByte(00), Convert.ToByte(00));
         #endregion
         #region Constructor
         public MainWindow()
         {
             InitializeComponent();
-            status.setTool("Select");
             Button_Click_select(btn_Select, new RoutedEventArgs());
             MyCanvas.Width = 1100;
             MyCanvas.Height = 522;
@@ -72,10 +73,10 @@ namespace Paint_Design
                 line.Y1 = e.GetPosition(MyCanvas).Y;
                 line.X2 = line.X1;
                 line.Y2 = line.Y1;
-                line.Stroke = new SolidColorBrush(boderColor);
+                line.Stroke = new SolidColorBrush(status.getBoderColor());
                 line.HorizontalAlignment = HorizontalAlignment.Left;
                 line.VerticalAlignment = VerticalAlignment.Center;
-                line.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
+                line.StrokeThickness = status.getSize();
                 /// <li> add lỉne vào Pannel Canvas
                 MyCanvas.Children.Add(line);
                 /// </ul>
@@ -91,9 +92,9 @@ namespace Paint_Design
                 /// <li> Set các thuộc tính cho ellip </li>
                 ellip.Height = 1;
                 ellip.Width = 1;
-                ellip.Fill = new SolidColorBrush(FillColor);
-                ellip.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
-                ellip.Stroke = new SolidColorBrush(boderColor);
+                ellip.Fill = new SolidColorBrush(status.getFillColor());
+                ellip.StrokeThickness = status.getSize();
+                ellip.Stroke = new SolidColorBrush(status.getBoderColor());
                 /// <li> add ellip vào Pannel Canvas
                 MyCanvas.Children.Add(ellip);
                 /// </ul>
@@ -108,11 +109,11 @@ namespace Paint_Design
                 rectangle = new Rectangle();
                 status.setTool("rectangleDraw");
                 /// <li> Set các thuộc tính cho rectangle </li>
-                rectangle.Fill = new SolidColorBrush(FillColor);
+                rectangle.Fill = new SolidColorBrush(status.getFillColor());
                 rectangle.Height = 1;
                 rectangle.Width = 1;
-                rectangle.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
-                rectangle.Stroke = new SolidColorBrush(boderColor);
+                rectangle.StrokeThickness = status.getSize();
+                rectangle.Stroke = new SolidColorBrush(status.getBoderColor());
                 /// <li> add ellip vào Pannel Canvas
                 MyCanvas.Children.Add(rectangle);
                 /// </ul>
@@ -147,7 +148,7 @@ namespace Paint_Design
                 polyl = new Polyline();
                 /// -       Set thuộc tính
                 polyl.Stroke = Brushes.White;
-                polyl.StrokeThickness = (listSize.SelectedIndex + 1) * 4;
+                polyl.StrokeThickness = status.getSize()*2;
                 polyl.Points.Add(point_start);
                 status.setTool("erasing");
                 MyCanvas.Children.Add(polyl);
@@ -159,8 +160,8 @@ namespace Paint_Design
                 polyl = new Polyline();
                 status.setTool("polylinenext");
                 /// -       Set thuộc tính
-                polyl.Stroke = new SolidColorBrush(boderColor);
-                polyl.StrokeThickness = (listSize.SelectedIndex + 1) * 2;
+                polyl.Stroke = new SolidColorBrush(status.getBoderColor());
+                polyl.StrokeThickness = status.getSize();
                 polyl.Points.Add(point_start);
                 /// -       Thêm vào panel Canvas
                 MyCanvas.Children.Add(polyl);
@@ -172,8 +173,8 @@ namespace Paint_Design
                 status.setTool("textDraw");
                 text = new TextBox();
                 /// -       set thuộc tính
-                text.BorderBrush = new SolidColorBrush(boderColor);
-                text.Background = new SolidColorBrush(FillColor);
+                text.BorderBrush = new SolidColorBrush(status.getBoderColor());
+                text.Background = new SolidColorBrush(status.getFillColor());
                 text.Visibility = Visibility.Visible;
                 /// -       Thêm vào panel Canvas
                 MyCanvas.Children.Add(text);
@@ -205,8 +206,8 @@ namespace Paint_Design
             if ((status.getTool() == "erase") || ((status.getTool() == "erasing")))
                 if ((x > 0) && (y > 0))
                 {
-                    erase_rec.Width = (listSize.SelectedIndex + 1) * 4;
-                    erase_rec.Height = (listSize.SelectedIndex + 1) * 4;
+                    erase_rec.Width = status.getSize() * 2;
+                    erase_rec.Height = status.getSize() * 2;
                     Canvas.SetZIndex(erase_rec, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
                     Canvas.SetLeft(erase_rec, x - erase_rec.Width / 2);
                     Canvas.SetTop(erase_rec, y - erase_rec.Width / 2);
@@ -543,7 +544,7 @@ namespace Paint_Design
             selectionRectangle.Visibility = Visibility.Collapsed;
         }
         /// <summary>
-        /// Khi click vào Tool vẽ ellip . . .
+        /// Khi click vào Tool vẽ rectangle . . .
         /// </summary>
         /// <param name="btnRectangle"></param>
         /// <param name="e"></param>
@@ -552,13 +553,31 @@ namespace Paint_Design
             status.setTool("rectangle");
             selectionRectangle.Visibility = Visibility.Collapsed;
         }
+        /// <summary>
+        /// Khi click vào Tool Tẩy (erase)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void erase_Click(object sender, RoutedEventArgs e)
         {
             status.setTool("erase");
             erase_rec.Cursor = Cursors.Cross;
             erase_rec.Fill = Brushes.White;
         }
-
+        /// <summary>
+        /// Khi click vào Tool vẽ bằng bút
+        /// </summary>
+        /// <param name="btnPolyLine"></param>
+        /// <param name="e"></param>
+        public void PolyLine_Click(object btnPolyLine, RoutedEventArgs e)
+        {
+            selectionRectangle.Visibility = Visibility.Collapsed;
+            status.setTool("polyline");
+        }
+        private void Delete_Click(object menuDel, RoutedEventArgs e)
+        {
+            Xoa(Canvas.GetLeft(img), Canvas.GetTop(img), selectionRectangle.Width - 2, selectionRectangle.Height - 2);
+        }
 
         private void btn_Select_Unchecked(object btnSelect, RoutedEventArgs e)
         {
@@ -576,35 +595,37 @@ namespace Paint_Design
             erase_rec.Height = 0;
             erase_rec.Width = 0;
         }
+        /// <summary>
+        /// Xử lí khi click vào chọn FillColor
+        /// </summary>
+        /// <param name="btnFill"></param>
+        /// <param name="e"></param>
         public void fill_Click(object btnFill, RoutedEventArgs e)
         {
-            PickColor pickcolor = new PickColor(FillColor);
+            PickColor pickcolor = new PickColor(status.getFillColor());
             if ((bool)pickcolor.ShowDialog())
-            {
-            }
-            if (pickcolor.result) FillColor = pickcolor.color;
-            lColor.Background = new SolidColorBrush(FillColor);
+            {}
+            if (pickcolor.result) status.setFillColor(pickcolor.color);
+            lColor.Background = new SolidColorBrush(status.getFillColor());
         }
+        /// <summary>
+        /// Xử lí khi click vào chọn BoderColor
+        /// </summary>
+        /// <param name="btnBoder"></param>
+        /// <param name="e"></param>
         public void Boder_Click(object btnBoder, RoutedEventArgs e)
         {
-            PickColor pickcolor = new PickColor(boderColor);
+            PickColor pickcolor = new PickColor(status.getBoderColor());
             if ((bool)pickcolor.ShowDialog())
-            {
-            }
-            if (pickcolor.result) boderColor = pickcolor.color;
-            BoderColor.Background = new SolidColorBrush(boderColor);
+            {}
+            if (pickcolor.result) status.setBoderColor(pickcolor.color);
+            BoderColor.Background = new SolidColorBrush(status.getBoderColor());
         }
-
-        public void PolyLine_Click(object btnPolyLine, RoutedEventArgs e)
-        {
-            selectionRectangle.Visibility = Visibility.Collapsed;
-            status.setTool("polyline");
-        }
-
-        public void Delete_Click(object menuDel, RoutedEventArgs e)
-        {
-            Xoa(Canvas.GetLeft(img), Canvas.GetTop(img), selectionRectangle.Width - 2, selectionRectangle.Height - 2);
-        }
+        /// <summary>
+        /// Menu Copy
+        /// </summary>
+        /// <param name="menuDel"></param>
+        /// <param name="e"></param>
         public void Copy_Click(object menuDel, RoutedEventArgs e)
         {
             Clipboard.SetImage(source);
@@ -613,6 +634,11 @@ namespace Paint_Design
         {
             MessageBox.Show("Sorry! Công cụ này chưa được xây dựng trong phiên bản hiện tại!");
         }
+        /// <summary>
+        /// Menu Resize
+        /// </summary>
+        /// <param name="menuResize"></param>
+        /// <param name="e"></param>
         public void Resize_Click(object menuResize, RoutedEventArgs e)
         {
             Resize resize = new Resize(MyCanvas.Width, MyCanvas.Height);
@@ -645,6 +671,11 @@ namespace Paint_Design
             pointdrag.X = point_start.X - Canvas.GetLeft(selectionRectangle);
             pointdrag.Y = point_start.Y - Canvas.GetTop(selectionRectangle);
         }
+        /// <summary>
+        /// Xử lí khi thay đổi kích thước window
+        /// </summary>
+        /// <param name="window"></param>
+        /// <param name="e"></param>
         public void main_SizeChanged(object window, SizeChangedEventArgs e)
         {
             if (main.Width < 1000) SCW.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
@@ -665,6 +696,11 @@ namespace Paint_Design
             Xoa(Canvas.GetLeft(img), Canvas.GetTop(img), selectionRectangle.Width - 2, selectionRectangle.Height - 2);
             selectionRectangle.Visibility = Visibility.Collapsed;
         }
+        /// <summary>
+        /// Menu Paste
+        /// </summary>
+        /// <param name="menuPaste"></param>
+        /// <param name="e"></param>
         public void Paste_Click(object menuPaste, RoutedEventArgs e)
         {
             img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
@@ -685,19 +721,45 @@ namespace Paint_Design
             Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
             status.setTool("Selected");
         }
-
-        private void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        /// <summary>
+        /// Xử lí tạo ConfirmDialog khi click vào "X" - thoát
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Bạn có muốn lưu lại không", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.No)
+            MessageBoxResult result = MessageBox.Show("Bạn có muốn lưu lại trước khi thoát không", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Cancel)
             {
-                e.Cancel = false;
+                e.Cancel = true;
             }
             if (result == MessageBoxResult.Yes)
             {
                 Save_Click(new Object(), new RoutedEventArgs());
             }
         }
+        /// <summary>
+        ///  Khi thay đổi kích thước
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void listSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            status.setSize((listSize.SelectedIndex + 1) * 2);
+        }
         #endregion
+
+        private void More_Size_Click(object sender, RoutedEventArgs e)
+        {
+            MoreSize moresize = new MoreSize();
+            if ((bool)moresize.ShowDialog())
+            {
+            }
+            if (moresize.result)
+            {
+                listSize.SelectedItem = null;
+                status.setSize(moresize.int_size);
+            }
+        }
     }
 }
