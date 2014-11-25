@@ -22,18 +22,16 @@ namespace Paint_Design
         public Polyline polyl = new Polyline();
         public Ellipse ellip = new Ellipse();
         public Rectangle rectangle = new Rectangle();
-        public Point point_start = new Point(); 
+        public Point point_start = new Point();
         public Point pointdrag = new Point();
-        public Boolean ClickDown =false;
+        public Boolean ClickDown = false;
         public Boolean Dragging = new Boolean();
         public TextBox text;
         public BitmapSource source;
         public double dpi = 96d;
-        public double minLeft = 0;
-        public double minTop = 0;
         Image img = new Image();
         private Color FillColor = Color.FromArgb(Convert.ToByte(00), Convert.ToByte(00), Convert.ToByte(00), Convert.ToByte(00));
-        private Color boderColor=Color.FromArgb(Convert.ToByte(255),Convert.ToByte(00),Convert.ToByte(00),Convert.ToByte(00));
+        private Color boderColor = Color.FromArgb(Convert.ToByte(255), Convert.ToByte(00), Convert.ToByte(00), Convert.ToByte(00));
         #endregion
         #region Constructor
         public MainWindow()
@@ -45,24 +43,24 @@ namespace Paint_Design
             MyCanvas.Height = 522;
         }
         #endregion
-        
-        
-#region "Mouse events on MyCanvas"
+
+
+        #region "Mouse events on MyCanvas"
         #region Mouse Down
-// Xu ly su kien MouseDown tren panel Canvas
-/// <summary>
-///  Xu ly su kien MouseDown tren panel Canvas
-/// </summary>
-/// <param name="sender"></param>
-/// <param name=""></param>
+        // Xu ly su kien MouseDown tren panel Canvas
+        /// <summary>
+        ///  Xu ly su kien MouseDown tren panel Canvas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name=""></param>
         public void Mycanvas_Mouse_Down(object sender, MouseEventArgs e)
         {
-/// <ul>
-/// <li>> Lấy tọa độ điểm mouse down - point_start </li>
+            /// <ul>
+            /// <li>> Lấy tọa độ điểm mouse down - point_start </li>
             ClickDown = true;
             point_start.X = e.GetPosition(MyCanvas).X;
             point_start.Y = e.GetPosition(MyCanvas).Y;
-/// <li>> Xử lý nếu công cụ đang được chọn là line - Vẽ đường thẳng
+            /// <li>> Xử lý nếu công cụ đang được chọn là line - Vẽ đường thẳng
             if (status.getTool() == "line")
             {
                 /// <ul> 
@@ -82,8 +80,8 @@ namespace Paint_Design
                 MyCanvas.Children.Add(line);
                 /// </ul>
             }
-/// </li>
-/// <li>> Xử lý nếu công cụ đang được chọn là ellip - Vẽ ellipse
+            /// </li>
+            /// <li>> Xử lý nếu công cụ đang được chọn là ellip - Vẽ ellipse
             if (status.getTool() == "ellip")
             {
                 /// <ul>
@@ -102,7 +100,7 @@ namespace Paint_Design
                 /// </li>
 
             }
-/// <li>> Xử lý nếu công cụ đang được chọn là rectangle - Vẽ hình chữ nhật
+            /// <li>> Xử lý nếu công cụ đang được chọn là rectangle - Vẽ hình chữ nhật
             if (status.getTool() == "rectangle")
             {
                 /// <ul>
@@ -119,8 +117,8 @@ namespace Paint_Design
                 MyCanvas.Children.Add(rectangle);
                 /// </ul>
             }
-///  </li>
-/// <li>> Xử lý khi trạng thái là Selected ( đã chọn) </li>
+            ///  </li>
+            /// <li>> Xử lý khi trạng thái là Selected ( đã chọn) </li>
             if (status.getTool() == "Selected")
             {
                 selectionRectangle.Height = 0;
@@ -134,21 +132,27 @@ namespace Paint_Design
                 ClickDown = true;
                 img = new Image();
             }
-/// <li>> Xử lý nếu công cụ đang được chọn là select </li>
+            /// <li>> Xử lý nếu công cụ đang được chọn là select </li>
             if (status.getTool() == "Select")
             {
                 /// -       SetZIndex
                 status.setTool("Selecting");
                 Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
             }
-/// <li>> Xử lý nếu công cụ đang được chọn là erase </li>
+            /// <li>> Xử lý nếu công cụ đang được chọn là erase </li>
             if (status.getTool() == "erase")
             {
                 /// -       Gọi hàm Xoa(Canvas.GetLeft(erase_rec), Canvas.GetTop(erase_rec), erase_rec.Height, erase_rec.Width)
                 Xoa(Canvas.GetLeft(erase_rec), Canvas.GetTop(erase_rec), erase_rec.Height, erase_rec.Width);
+                polyl = new Polyline();
+                /// -       Set thuộc tính
+                polyl.Stroke = Brushes.White;
+                polyl.StrokeThickness = (listSize.SelectedIndex + 1) * 4;
+                polyl.Points.Add(point_start);
                 status.setTool("erasing");
+                MyCanvas.Children.Add(polyl);
             }
-/// <li>> Xử lý nếu công cụ đang được chọn là polyline </li>
+            /// <li>> Xử lý nếu công cụ đang được chọn là polyline </li>
             if (status.getTool() == "polyline")
             {
                 /// -       SetTool "polylinenext" và khởi tạo đối tượng kiểu Polyline
@@ -161,7 +165,7 @@ namespace Paint_Design
                 /// -       Thêm vào panel Canvas
                 MyCanvas.Children.Add(polyl);
             }
-/// <li>> Xử lý nếu công cụ được chọn là text </li>
+            /// <li>> Xử lý nếu công cụ được chọn là text </li>
             if (status.getTool() == "text")
             {
                 /// -       setTool "textDraw" và khởi tạo đối tượng kiểu TextBox
@@ -174,15 +178,15 @@ namespace Paint_Design
                 /// -       Thêm vào panel Canvas
                 MyCanvas.Children.Add(text);
             }
-/// <li>> Xử lý khi trạng thái là write</li>            
+            /// <li>> Xử lý khi trạng thái là write</li>            
             if (status.getTool() == "write")
             {
                 status.setTool("text");
             }
 
         }
-/// </ul>
-#endregion
+        /// </ul>
+        #endregion
         #region "Mouse Move"
         /// <summary>
         /// Xử lý sự kiện MouseMove trên MyCanvas
@@ -191,111 +195,106 @@ namespace Paint_Design
         /// <param name="e"></param>
         public void Mycanvas_Mouse_Move(object sender, MouseEventArgs e)
         {
-            if (ClickDown)
-            {
             statusbar.Text = status.getTool();
             /// - Lấy tọa độ chuột
             double x = e.GetPosition(MyCanvas).X;
             double y = e.GetPosition(MyCanvas).Y;
             /// - Xử lí
             /// <ul>
-            /// <li> Nếu trạng thái là "lineDraw" => vẽ đoạn thẳng từ </li>
-            if (status.getTool()=="lineDraw")
-            {
-             
-                line.X2 = x;
-                line.Y2 = y;
-            }
-            /// <li>Vẽ ellip </li>
-            if (status.getTool() == "ellipDraw")
-            {
-                ellip.Height = Math.Abs(y - point_start.Y);
-                ellip.Width = Math.Abs(x - point_start.X);
-                ellip.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
-                ellip.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
-            }
-            /// <li> Vẽ hình chữ nhật </li>
-            if (status.getTool() == "rectangleDraw")
-            {
-
-                rectangle.Height = Math.Abs(y - point_start.Y);
-                rectangle.Width = Math.Abs(x - point_start.X);
-                rectangle.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
-                rectangle.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
-            }
-            /// <li> Nếu trạng thái là "Select" </li>
-            if (status.getTool() == "Selecting")
-            {
-                {
-                    selectionRectangle.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
-                    selectionRectangle.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
-                    selectionRectangle.Width = Math.Abs(x - point_start.X);
-                    selectionRectangle.Height = Math.Abs(y - point_start.Y);
-                    if (selectionRectangle.Visibility != Visibility.Visible)
-                        selectionRectangle.Visibility = Visibility.Visible;
-                }
-            }
-            /// <li> Nếu trạng thái là "Selected" </li>
-            if (status.getTool() != "Selected")
-            {
-                if (selectionRectangle.Visibility == Visibility.Collapsed)
-                {
-                    img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
-                    img.Cursor = Cursors.Cross;
-                    img.ContextMenu = null;
-                }
-            }
-            /// <li> Nếu trạng thái là "Dragging" </li>
-            if (status.getTool() == "Dragging")
-            {
-                Canvas.SetLeft(selectionRectangle, x - pointdrag.X-1);
-                Canvas.SetLeft(MyCanvas.Children[MyCanvas.Children.Count-1], x-pointdrag.X);
-                Canvas.SetTop(selectionRectangle, y - pointdrag.Y-1);
-                Canvas.SetTop(MyCanvas.Children[MyCanvas.Children.Count - 1], y - pointdrag.Y);
-                //MyCanvas.Children[MyCanvas.Children.Count - 1].Visibility = Visibility.Visible;
-            }
             /// <li> Nếu trạng thái là "erase" hoặc "erasing" </li>
-            if ((status.getTool() == "erase")||((status.getTool() == "erasing")))
-                if ((x>0)&&(y>0))
-            {
-                Canvas.SetZIndex(erase_rec, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count-1])+1);
-                erase_rec.Width = (listSize.SelectedIndex + 1) * 4;
-                erase_rec.Height = (listSize.SelectedIndex + 1) * 4;
-                Canvas.SetLeft(erase_rec, x - erase_rec.Width/2);
-                Canvas.SetTop(erase_rec, y - erase_rec.Width/2);
-                erase_rec.Visibility = Visibility.Visible;
-            }
-            /// <li> Nếu trạng thái chỉ là "erasing" </li>
-            if (status.getTool() == "erasing")
+            if ((status.getTool() == "erase") || ((status.getTool() == "erasing")))
                 if ((x > 0) && (y > 0))
+                {
+                    erase_rec.Width = (listSize.SelectedIndex + 1) * 4;
+                    erase_rec.Height = (listSize.SelectedIndex + 1) * 4;
+                    Canvas.SetZIndex(erase_rec, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
+                    Canvas.SetLeft(erase_rec, x - erase_rec.Width / 2);
+                    Canvas.SetTop(erase_rec, y - erase_rec.Width / 2);
+                    erase_rec.Visibility = Visibility.Visible;
+                }
+            /// <li> Nếu ClickDown==true 
+            /// <ul>
+            if (ClickDown)
             {
-                Rectangle xoa = new Rectangle();
-                Canvas.SetLeft(xoa, Canvas.GetLeft(erase_rec));
-                Canvas.SetTop(xoa, Canvas.GetTop(erase_rec));
-                xoa.Width = erase_rec.Width;
-                xoa.Height = erase_rec.Height;
-                xoa.Fill = Brushes.White;
-                MyCanvas.Children.Add(xoa);
+                /// <li> Nếu trạng thái là "lineDraw" => vẽ đoạn thẳng từ </li>
+                if (status.getTool() == "lineDraw")
+                {
+
+                    line.X2 = x;
+                    line.Y2 = y;
+                }
+                /// <li>Vẽ ellip </li>
+                if (status.getTool() == "ellipDraw")
+                {
+                    ellip.Height = Math.Abs(y - point_start.Y);
+                    ellip.Width = Math.Abs(x - point_start.X);
+                    ellip.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
+                    ellip.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
+                }
+                /// <li> Vẽ hình chữ nhật </li>
+                if (status.getTool() == "rectangleDraw")
+                {
+
+                    rectangle.Height = Math.Abs(y - point_start.Y);
+                    rectangle.Width = Math.Abs(x - point_start.X);
+                    rectangle.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
+                    rectangle.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
+                }
+                /// <li> Nếu trạng thái là "Select" </li>
+                if (status.getTool() == "Selecting")
+                {
+                    {
+                        selectionRectangle.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
+                        selectionRectangle.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
+                        selectionRectangle.Width = Math.Abs(x - point_start.X);
+                        selectionRectangle.Height = Math.Abs(y - point_start.Y);
+                        if (selectionRectangle.Visibility != Visibility.Visible)
+                            selectionRectangle.Visibility = Visibility.Visible;
+                    }
+                }
+                /// <li> Nếu trạng thái là "Selected" </li>
+                if (status.getTool() != "Selected")
+                {
+                    if (selectionRectangle.Visibility == Visibility.Collapsed)
+                    {
+                        img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
+                        img.Cursor = Cursors.Pen;
+                        img.ContextMenu = null;
+                    }
+                }
+                /// <li> Nếu trạng thái là "Dragging" </li>
+                if (status.getTool() == "Dragging")
+                {
+                    Canvas.SetLeft(selectionRectangle, x - pointdrag.X - 1);
+                    Canvas.SetLeft(MyCanvas.Children[MyCanvas.Children.Count - 1], x - pointdrag.X);
+                    Canvas.SetTop(selectionRectangle, y - pointdrag.Y - 1);
+                    Canvas.SetTop(MyCanvas.Children[MyCanvas.Children.Count - 1], y - pointdrag.Y);
+                }
+                /// <li> Nếu trạng thái chỉ là "erasing" </li>
+                if (status.getTool() == "erasing")
+                    if ((x > 0) && (y > 0))
+                    {
+                        polyl.Points.Add(new Point(x, y));
+                    }
+                /// <li> Nếu trạng thái là "polylinenext" </li>
+                if (status.getTool() == "polylinenext")
+                {
+                    polyl.Points.Add(new Point(x, y));
+                }
+                /// <li> Nếu trạng thái là "textDraw" </li>
+                if (status.getTool() == "textDraw")
+                {
+                    text.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
+                    text.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
+                    text.Width = Math.Abs(x - point_start.X);
+                    text.Height = Math.Abs(y - point_start.Y);
+                }
             }
-            /// <li> Nếu trạng thái là "polylinenext" </li>
-            if (status.getTool() == "polylinenext")
-            {
-                if (minLeft > x) minLeft = x;
-                if (minTop > y) minTop = y;
-                polyl.Points.Add(new Point(x, y));
-            }
-            /// <li> Nếu trạng thái là "textDraw" </li>
-            if (status.getTool() == "textDraw")
-            {
-                text.SetValue(Canvas.LeftProperty, Math.Min(x, point_start.X));
-                text.SetValue(Canvas.TopProperty, Math.Min(y, point_start.Y));
-                text.Width = Math.Abs(x - point_start.X);
-                text.Height = Math.Abs(y - point_start.Y);
-            }
+            /// </ul>
+            /// </li>
             /// <li> Hiển thị tọa độ lên statusBar </li>
             MousePosition.Content = (x.ToString() + "," + y.ToString());
             /// </ul>
-        }
         }
         #endregion
         #region Mouse Up
@@ -307,88 +306,88 @@ namespace Paint_Design
         /// <param name="e"></param>
         public void Mycanvas_Mouse_Up(object sender, MouseEventArgs e)
         {
-            if(status.getTool() != "Selecting")
-                {
-          
-                }
+            if (status.getTool() != "Selecting")
+            {
+
+            }
             /// <ul> 
             /// <li> Vẽ xong line - trả về trạng thái "line" </li>
-            if (status.getTool()=="lineDraw")
+            if (status.getTool() == "lineDraw")
             {
                 status.setTool("line");
             }
             /// <li> Vẽ xong ellipse - trả về trạng thái "ellip" </li>
-            if (status.getTool()=="ellipDraw")
+            if (status.getTool() == "ellipDraw")
             {
                 status.setTool("ellip");
             }
             /// <li> Vẽ xong rectangle - trả về trạng thái "rectangle" </li>
-            if (status.getTool()=="rectangleDraw")
+            if (status.getTool() == "rectangleDraw")
             {
                 status.setTool("rectangle");
             }
             /// <li> Xử lí sau khi Select - Chuyển sang "Selected" </li>
-            if ((ClickDown==true)&&(status.getTool() == "Selecting"))
-             {
-                 if ((selectionRectangle.Width > 0) && (selectionRectangle.Height > 0))
-                 {
-                     if (Canvas.GetLeft(selectionRectangle) < 0)
-                     {
-                         selectionRectangle.Width = selectionRectangle.Width + Canvas.GetLeft(selectionRectangle);
-                         Canvas.SetLeft(selectionRectangle, 0);
-                     }
-                     if (Canvas.GetTop(selectionRectangle) < 0)
-                     {
-                         selectionRectangle.Height = selectionRectangle.Height + Canvas.GetTop(selectionRectangle);
-                         Canvas.SetTop(selectionRectangle, 0);
-                     }
-                     status.setTool("Selected");
-                     selectionRectangle.Visibility = Visibility.Hidden;
-                     int widthim = (int)(MyCanvas.ActualWidth + ScwCanvas.Margin.Left);
-                     int heightim = (int)(MyCanvas.ActualHeight+ScwCanvas.Margin.Top);
-                     RenderTargetBitmap rtb = new RenderTargetBitmap(widthim, heightim, dpi, dpi, PixelFormats.Default);
-                     rtb.Render(MyCanvas);
-                     CroppedBitmap cropbmt = new CroppedBitmap(rtb, new Int32Rect((int)Math.Max((Canvas.GetLeft(selectionRectangle)),0), (int)Math.Max((Canvas.GetTop(selectionRectangle)),0), (int)(selectionRectangle.Width), (int)(selectionRectangle.Height)));
-                     img = new Image { Source = cropbmt };
-                     source = cropbmt;
-                     Canvas.SetLeft(img, Canvas.GetLeft(selectionRectangle));
-                     Canvas.SetTop(img, Canvas.GetTop(selectionRectangle));
-                     double width = selectionRectangle.Width;
-                     double height = selectionRectangle.Height;
-                     selectionRectangle.Visibility = Visibility.Visible;
-                     img.MouseLeftButtonDown += selectionRectangle_MouseLeftButtonDown;
-                     Xoa(Canvas.GetLeft(selectionRectangle), Canvas.GetTop(selectionRectangle), width, height );
-                     img.Cursor = Cursors.SizeAll;
-                     img.ContextMenu = imgContext;
-                     MyCanvas.Children.Add(img);
-                     Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(img) + 1);
-                     selectionRectangle.Fill = null;
-                 }
-             }
+            if ((ClickDown == true) && (status.getTool() == "Selecting"))
+            {
+                if ((selectionRectangle.Width > 0) && (selectionRectangle.Height > 0))
+                {
+                    if (Canvas.GetLeft(selectionRectangle) < 0)
+                    {
+                        selectionRectangle.Width = selectionRectangle.Width + Canvas.GetLeft(selectionRectangle);
+                        Canvas.SetLeft(selectionRectangle, 0);
+                    }
+                    if (Canvas.GetTop(selectionRectangle) < 0)
+                    {
+                        selectionRectangle.Height = selectionRectangle.Height + Canvas.GetTop(selectionRectangle);
+                        Canvas.SetTop(selectionRectangle, 0);
+                    }
+                    status.setTool("Selected");
+                    selectionRectangle.Visibility = Visibility.Hidden;
+                    int widthim = (int)(MyCanvas.ActualWidth + ScwCanvas.Margin.Left);
+                    int heightim = (int)(MyCanvas.ActualHeight + ScwCanvas.Margin.Top);
+                    RenderTargetBitmap rtb = new RenderTargetBitmap(widthim, heightim, dpi, dpi, PixelFormats.Default);
+                    rtb.Render(MyCanvas);
+                    CroppedBitmap cropbmt = new CroppedBitmap(rtb, new Int32Rect((int)Math.Max((Canvas.GetLeft(selectionRectangle)), 0), (int)Math.Max((Canvas.GetTop(selectionRectangle)), 0), (int)(selectionRectangle.Width), (int)(selectionRectangle.Height)));
+                    img = new Image { Source = cropbmt };
+                    source = cropbmt;
+                    Canvas.SetLeft(img, Canvas.GetLeft(selectionRectangle));
+                    Canvas.SetTop(img, Canvas.GetTop(selectionRectangle));
+                    double width = selectionRectangle.Width;
+                    double height = selectionRectangle.Height;
+                    selectionRectangle.Visibility = Visibility.Visible;
+                    img.MouseLeftButtonDown += selectionRectangle_MouseLeftButtonDown;
+                    Xoa(Canvas.GetLeft(selectionRectangle), Canvas.GetTop(selectionRectangle), width, height);
+                    img.Cursor = Cursors.SizeAll;
+                    img.ContextMenu = imgContext;
+                    MyCanvas.Children.Add(img);
+                    Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(img) + 1);
+                    selectionRectangle.Fill = null;
+                }
+            }
             /// <li> Nếu trạng thái đang là "Dragging" - Chuyển sang "Selected" </li>
-             if (status.getTool() == "Dragging")
-             {
-                 status.setTool("Selected");
-             }
-             /// <li> Nếu trạng thái đang là "erasing" - Chuyển sang "erase" </li>
-             if (status.getTool() == "erasing")
-             {
-                  status.setTool("erase");
-             }
-             /// <li> Nếu trạng thái đang là "polylinenext" - Chuyển sang "polyline" </li>
-             if (status.getTool() == "polylinenext")
-             {
-                 status.setTool("polyline");
-             }
-             /// <li> Nếu trạng thái đang là "TextDraw" - Chuyển sang "write" </li>
-             if (status.getTool() == "textDraw")
-             {
-                 status.setTool("write");
-             }
-             ClickDown = false;
+            if (status.getTool() == "Dragging")
+            {
+                status.setTool("Selected");
+            }
+            /// <li> Nếu trạng thái đang là "erasing" - Chuyển sang "erase" </li>
+            if (status.getTool() == "erasing")
+            {
+                status.setTool("erase");
+            }
+            /// <li> Nếu trạng thái đang là "polylinenext" - Chuyển sang "polyline" </li>
+            if (status.getTool() == "polylinenext")
+            {
+                status.setTool("polyline");
+            }
+            /// <li> Nếu trạng thái đang là "TextDraw" - Chuyển sang "write" </li>
+            if (status.getTool() == "textDraw")
+            {
+                status.setTool("write");
+            }
+            ClickDown = false;
         }
         #endregion
-#endregion
+        #endregion
         #region Xoa
         public void Xoa(double p1, double p2, double width, double height)
         {
@@ -400,7 +399,7 @@ namespace Paint_Design
             xoa.Fill = Brushes.White;
             MyCanvas.Children.Add(xoa);
         }
-#endregion    
+        #endregion
         #region Command Undo
         private void undo_CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -408,10 +407,10 @@ namespace Paint_Design
         }
         public void undo_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-           int count = MyCanvas.Children.Count;
-           if (count > 0)
-               MyCanvas.Children.RemoveAt(count - 1);
-             else MessageBox.Show("Can not undo");
+            int count = MyCanvas.Children.Count;
+            if (count > 0)
+                MyCanvas.Children.RemoveAt(count - 1);
+            else MessageBox.Show("Can not undo");
         }
         #endregion
 
@@ -529,6 +528,7 @@ namespace Paint_Design
         {
             status.setTool("Select");
             selectionRectangle.Fill = null;
+            MyCanvas.Cursor = Cursors.Cross;
         }
         /// <summary>
         /// Khi click vào Tool vẽ ellip . . .
@@ -555,16 +555,19 @@ namespace Paint_Design
         public void erase_Click(object sender, RoutedEventArgs e)
         {
             status.setTool("erase");
+            erase_rec.Cursor = Cursors.Cross;
+            erase_rec.Fill = Brushes.White;
         }
-        
+
 
         private void btn_Select_Unchecked(object btnSelect, RoutedEventArgs e)
         {
             selectionRectangle.Visibility = Visibility.Collapsed;
             img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
-            img.Cursor = Cursors.Cross;
+            img.Cursor = Cursors.Pen;
             ClickDown = false;
             img = new Image();
+            MyCanvas.Cursor = Cursors.Pen;
         }
 
         private void RadioButton_Unchecked(object sender, RoutedEventArgs e)
@@ -612,7 +615,7 @@ namespace Paint_Design
         }
         public void Resize_Click(object menuResize, RoutedEventArgs e)
         {
-            Resize resize= new Resize(MyCanvas.Width,MyCanvas.Height);
+            Resize resize = new Resize(MyCanvas.Width, MyCanvas.Height);
             if ((bool)resize.ShowDialog())
             {
             }
@@ -667,7 +670,7 @@ namespace Paint_Design
             img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
             img.ContextMenu = null;
             BitmapSource bitmap = Clipboard.GetImage();
-            img = new Image {Source = bitmap};
+            img = new Image { Source = bitmap };
             Canvas.SetLeft(img, 0);
             Canvas.SetTop(img, 0);
             img.MouseLeftButtonDown += selectionRectangle_MouseLeftButtonDown;
@@ -676,26 +679,25 @@ namespace Paint_Design
             MyCanvas.Children.Add(img);
             Canvas.SetLeft(selectionRectangle, 0);
             Canvas.SetTop(selectionRectangle, 0);
-            //MessageBox.Show("" + IMG.Height + IMG.Width);
-            selectionRectangle.Width =img.Source.Width;
-            selectionRectangle.Height =img.Source.Height;
+            selectionRectangle.Width = img.Source.Width;
+            selectionRectangle.Height = img.Source.Height;
             selectionRectangle.Visibility = Visibility.Visible;
-            Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count-1])+1);
+            Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
             status.setTool("Selected");
         }
-        #endregion
 
         private void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Bạn có muốn lưu lại không", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.No)
             {
-                e.Cancel = true;
+                e.Cancel = false;
             }
             if (result == MessageBoxResult.Yes)
             {
-                Save_Click(new Object(),new RoutedEventArgs());
+                Save_Click(new Object(), new RoutedEventArgs());
             }
         }
+        #endregion
     }
 }
