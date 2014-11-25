@@ -179,13 +179,13 @@
                 <StatusBarItem x:Name="MousePosition" Height="39" VerticalAlignment="Top" Width="716" Margin="0,0,0,-5"/>
                 <StatusBarItem Content="Copyright @2014  By  Tuan94bg" Height="34" VerticalAlignment="Top" Width="209"/>
             </StatusBar>
-            <ScrollViewer Name="ScwCanvas" ClipToBounds="True" Margin="102,104,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="1260" MaxHeight="555" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <ScrollViewer Name="ScwCanvas" Margin="102,104,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="1260" MaxHeight="555" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Canvas
 					Background="White" x:Name="MyCanvas" MouseMove="Mycanvas_Mouse_Move"
 					MouseLeftButtonDown="Mycanvas_Mouse_Down"
 					MouseLeftButtonUp="Mycanvas_Mouse_Up"
 					Cursor="Pen"
-					ScrollViewer.CanContentScroll="False" Margin="0,0,3,3" ClipToBounds="True"
+					Margin="0,0,3,3" ClipToBounds="True" HorizontalAlignment="Left" VerticalAlignment="Top"
 		>
                     <Canvas.ContextMenu>
                         <ContextMenu>

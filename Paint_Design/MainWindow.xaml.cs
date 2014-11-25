@@ -26,7 +26,6 @@ namespace Paint_Design
         public Ellipse ellip = new Ellipse();
         public Rectangle rectangle = new Rectangle();
         public Point point_start = new Point();
-        public Point point_start_SCW = new Point();
         public Point pointdrag = new Point();
         public Boolean ClickDown = false;
         public Boolean Dragging = new Boolean();
@@ -126,7 +125,7 @@ namespace Paint_Design
                 selectionRectangle.Width = 0;
                 selectionRectangle.Visibility = Visibility.Collapsed;
                 img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
-                img.Cursor = Cursors.Cross;
+                img.Cursor = null;
                 status.setTool("Select");
                 point_start.X = e.GetPosition(MyCanvas).X;
                 point_start.Y = e.GetPosition(MyCanvas).Y;
@@ -259,7 +258,7 @@ namespace Paint_Design
                     if (selectionRectangle.Visibility == Visibility.Collapsed)
                     {
                         img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
-                        img.Cursor = Cursors.Pen;
+                        img.Cursor = null;
                         img.ContextMenu = null;
                     }
                 }
@@ -280,7 +279,7 @@ namespace Paint_Design
                 /// <li> Nếu trạng thái là "polylinenext" </li>
                 if (status.getTool() == "polylinenext")
                 {
-                    polyl.Points.Add(new Point(x, y));
+                  polyl.Points.Add(new Point(x, y));
                 }
                 /// <li> Nếu trạng thái là "textDraw" </li>
                 if (status.getTool() == "textDraw")
@@ -307,10 +306,6 @@ namespace Paint_Design
         /// <param name="e"></param>
         public void Mycanvas_Mouse_Up(object sender, MouseEventArgs e)
         {
-            if (status.getTool() != "Selecting")
-            {
-
-            }
             /// <ul> 
             /// <li> Vẽ xong line - trả về trạng thái "line" </li>
             if (status.getTool() == "lineDraw")
@@ -344,10 +339,18 @@ namespace Paint_Design
                     }
                     status.setTool("Selected");
                     selectionRectangle.Visibility = Visibility.Hidden;
-                    int widthim = (int)(MyCanvas.ActualWidth + ScwCanvas.Margin.Left);
-                    int heightim = (int)(MyCanvas.ActualHeight + ScwCanvas.Margin.Top);
-                    RenderTargetBitmap rtb = new RenderTargetBitmap(widthim, heightim, dpi, dpi, PixelFormats.Default);
-                    rtb.Render(MyCanvas);
+                    /// -       Xử lí để có Bitmapsource từ panel Mycanvas
+                    Rect bounds =new Rect(0, 0, MyCanvas.Width, MyCanvas.Height);
+                    double dpi = 96d;
+                    RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, PixelFormats.Default);
+                    DrawingVisual dv = new DrawingVisual();
+                    using (DrawingContext dc = dv.RenderOpen())
+                    {
+                        VisualBrush vb = new VisualBrush(MyCanvas);
+                        dc.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
+                    }
+                    rtb.Render(dv);
+                    /// -       Cắt lấy phần trong selectionRectangle
                     CroppedBitmap cropbmt = new CroppedBitmap(rtb, new Int32Rect((int)Math.Max((Canvas.GetLeft(selectionRectangle)), 0), (int)Math.Max((Canvas.GetTop(selectionRectangle)), 0), (int)(selectionRectangle.Width), (int)(selectionRectangle.Height)));
                     img = new Image { Source = cropbmt };
                     source = cropbmt;
@@ -399,19 +402,6 @@ namespace Paint_Design
             xoa.Height = height;
             xoa.Fill = Brushes.White;
             MyCanvas.Children.Add(xoa);
-        }
-        #endregion
-        #region Command Undo
-        private void undo_CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = MyCanvas.Children.Count > 3;
-        }
-        public void undo_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            int count = MyCanvas.Children.Count;
-            if (count > 0)
-                MyCanvas.Children.RemoveAt(count - 1);
-            else MessageBox.Show("Can not undo");
         }
         #endregion
 
@@ -480,8 +470,9 @@ namespace Paint_Design
             if ((bool)dlg.ShowDialog())
                 try
                 {
+                    selectionRectangle.Visibility = Visibility.Hidden;
                     string fileName = dlg.FileName;
-                    Rect bounds = VisualTreeHelper.GetDescendantBounds(MyCanvas);
+                    Rect bounds = new Rect(0, 0, MyCanvas.Width, MyCanvas.Height);
                     double dpi = 96d;
                     RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, PixelFormats.Default);
                     DrawingVisual dv = new DrawingVisual();
@@ -492,6 +483,7 @@ namespace Paint_Design
                     }
 
                     rtb.Render(dv);
+                   
                     using (FileStream fs = new FileStream(fileName, FileMode.Create))
                     {
                         BitmapEncoder encoder = new BmpBitmapEncoder();
@@ -583,7 +575,8 @@ namespace Paint_Design
         {
             selectionRectangle.Visibility = Visibility.Collapsed;
             img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
-            img.Cursor = Cursors.Pen;
+            img.ContextMenu = null;
+            img.Cursor = null;
             ClickDown = false;
             img = new Image();
             MyCanvas.Cursor = Cursors.Pen;
@@ -661,6 +654,17 @@ namespace Paint_Design
         }
         #endregion
         #region Event
+        private void undo_CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MyCanvas.Children.Count > 3;
+        }
+        public void undo_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            int count = MyCanvas.Children.Count;
+            if (count > 0)
+                MyCanvas.Children.RemoveAt(count - 1);
+            else MessageBox.Show("Can not undo");
+        }
         public void selectionRectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
@@ -693,7 +697,7 @@ namespace Paint_Design
 
         private void del_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Xoa(Canvas.GetLeft(img), Canvas.GetTop(img), selectionRectangle.Width - 2, selectionRectangle.Height - 2);
+            MyCanvas.Children.Remove(img);
             selectionRectangle.Visibility = Visibility.Collapsed;
         }
         /// <summary>
@@ -703,23 +707,28 @@ namespace Paint_Design
         /// <param name="e"></param>
         public void Paste_Click(object menuPaste, RoutedEventArgs e)
         {
-            img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
-            img.ContextMenu = null;
             BitmapSource bitmap = Clipboard.GetImage();
-            img = new Image { Source = bitmap };
-            Canvas.SetLeft(img, 0);
-            Canvas.SetTop(img, 0);
-            img.MouseLeftButtonDown += selectionRectangle_MouseLeftButtonDown;
-            img.Cursor = Cursors.SizeAll;
-            img.ContextMenu = imgContext;
-            MyCanvas.Children.Add(img);
-            Canvas.SetLeft(selectionRectangle, 0);
-            Canvas.SetTop(selectionRectangle, 0);
-            selectionRectangle.Width = img.Source.Width;
-            selectionRectangle.Height = img.Source.Height;
-            selectionRectangle.Visibility = Visibility.Visible;
-            Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
-            status.setTool("Selected");
+            if (bitmap != null)
+            {
+                img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
+                img.ContextMenu = null;
+                img = new Image { Source = bitmap };
+                Canvas.SetLeft(img, 0);
+                Canvas.SetTop(img, 0);
+                img.MouseLeftButtonDown += selectionRectangle_MouseLeftButtonDown;
+                img.Cursor = Cursors.SizeAll;
+                img.ContextMenu = imgContext;
+                MyCanvas.Children.Add(img);
+                Canvas.SetLeft(selectionRectangle, 0);
+                Canvas.SetTop(selectionRectangle, 0);
+                MyCanvas.Width = MyCanvas.ActualWidth < img.Source.Width ? img.Source.Width:MyCanvas.ActualWidth;
+                MyCanvas.Height = MyCanvas.ActualHeight < img.Source.Height ? img.Source.Height : MyCanvas.ActualHeight;
+                selectionRectangle.Width = img.Source.Width;
+                selectionRectangle.Height = img.Source.Height;
+                selectionRectangle.Visibility = Visibility.Visible;
+                Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
+                status.setTool("Selected");
+            }
         }
         /// <summary>
         /// Xử lí tạo ConfirmDialog khi click vào "X" - thoát
@@ -747,9 +756,12 @@ namespace Paint_Design
         {
             status.setSize((listSize.SelectedIndex + 1) * 2);
         }
-        #endregion
-
-        private void More_Size_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// More size
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void More_Size_Click(object sender, RoutedEventArgs e)
         {
             MoreSize moresize = new MoreSize();
             if ((bool)moresize.ShowDialog())
@@ -765,5 +777,6 @@ namespace Paint_Design
         {
             MessageBox.Show("Name: My Paint \nAuthor : Hoàng Minh Tuấn \nTrường Đại học Bách Khoa Hà Nội\nLớp : CNTT2.01 - K57  ");
         }
+        #endregion
     }
 }
