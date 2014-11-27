@@ -35,10 +35,11 @@ namespace Paint_Design
         private void OK_Click(object sender, RoutedEventArgs e)
         {
             result = true;
-            width = Double.Parse(Hoz.Text);
-            height = Double.Parse(Ver.Text);
-            this.Close();
-        }
+            if ((double.TryParse(Hoz.Text, out width))&&(double.TryParse(Ver.Text, out height))){
+                this.Close();
+            } else
+                MessageBox.Show("Vui lòng nhập số!");
+        }    
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
