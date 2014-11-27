@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Paint_Design.MainWindow"
-        Title="MyPaint" x:Name="main" Height="700" Width="1288.5" Background="#FF8F8B8B" WindowStartupLocation="CenterScreen" Icon="but.jpg" SizeChanged="main_SizeChanged"
+        Title="MyPaint" x:Name="main" Height="700" Width="1288.5" Background="#FF8F8B8B" WindowStartupLocation="CenterScreen" Icon="icon\but.jpg" SizeChanged="main_SizeChanged"
         Closing="main_Closing">
     <ScrollViewer Name="SCW" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="0" MouseMove="Mycanvas_Mouse_Move" ScrollViewer.CanContentScroll="False"
@@ -76,21 +76,21 @@
                 </Grid.RowDefinitions>
                 <RadioButton Style="{StaticResource {x:Type ToggleButton}}" x:Name="btn_Select" VerticalAlignment="Top" Height="71" Grid.RowSpan="2" Click="Button_Click_select" GroupName="Tool" IsChecked="True" Unchecked="btn_Select_Unchecked" Margin="0,0,2,0">
                     <StackPanel>
-                        <Image Source="Select.jpg" Height="45" Width="50"/>
+                        <Image Source="icon\Select.jpg" Height="45" Width="50"/>
                         <TextBlock Text="Select" TextAlignment="Center"/>
                     </StackPanel>
                 </RadioButton>
                 <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,1,0,0" Height="32" GroupName="Tool" Click="erase_Click" Unchecked="RadioButton_Unchecked">
-                    <Image Source="Tay.jpg"/>
+                    <Image Source="icon\Tay.jpg" Width="20" Height="20"/>
                 </RadioButton>
                 <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,2.5,0,0" Height="32" Grid.Row="1" GroupName="Tool" Click="NotInVersion">
-                    <Image Source="Mau.jpg"/>
+                    <Image Source="icon\Mau.jpg" Width="20" Height="20"/>
                 </RadioButton>
                 <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,1,0,0" Height="32" GroupName="Tool" Click="Text_Click">
-                    <Image Source="Text.jpg"/>
+                    <Image Source="icon\Text.jpg" Width="20" Height="20"/>
                 </RadioButton>
                 <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="2" Margin="1,2.5,0,0" Height="32" GroupName="Tool" Grid.Row="1" Click="PolyLine_Click">
-                    <Image Source="but.jpg"/>
+                    <Image Source="icon\but.jpg" Width="20" Height="20"/>
                 </RadioButton>
                 <Separator Grid.Column="3" HorizontalAlignment="Left" Height="66" Margin="10,2,0,0" Grid.RowSpan="2" Style="{DynamicResource SimpleSeparator}" VerticalAlignment="Top" Width="2"/>
                 <Grid Grid.Column="4" HorizontalAlignment="Left" Height="70" Margin="4,1,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="72" Background="#FFC1A2A2">
@@ -103,16 +103,16 @@
                         <ColumnDefinition Width="35"/>
                     </Grid.ColumnDefinitions>
                     <RadioButton x:Name="button" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" Width="32" Margin="1,0,0,2" Click="Button_Click_line" GroupName="Tool">
-                        <Image Source="thang.jpg"/>
+                        <Image Source="icon\line.jpg" Width="20" Height="20"/>
                     </RadioButton>
                     <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Column="1" Margin="1,0,1,1" Height="32" Click="Rectangle_Click" GroupName="Tool">
-                        <Image Source="cn.jpg"/>
+                        <Image Source="icon\cn.jpg" Width="20" Height="20"/>
                     </RadioButton>
                     <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Height="32" GroupName="Tool" Click="Ellip_Click">
-                        <Image Source="tron.jpg"/>
+                        <Image Source="icon\tron.jpg" Width="20" Height="20"/>
                     </RadioButton>
                     <RadioButton Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Grid.Row="1" Margin="1,1,1,0" Grid.Column="1" Height="32" GroupName="Tool" Click="NotInVersion">
-                        <Image Source="tamgiacvuong.jpg"/>
+                        <Image Source="icon\tamgiacvuong.jpg" Width="20" Height="20"/>
                     </RadioButton>
                 </Grid>
                 <Grid Grid.Column="6" HorizontalAlignment="Left" Height="60" Margin="2,5,1,5" Grid.RowSpan="2" VerticalAlignment="Top" Width="243">
@@ -159,16 +159,16 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBoxItem >
-                        <Image Source="1x.jpg" Width="80" Height="20"/>
+                        <Image Source="icon\1x.jpg" Width="80" Height="20"/>
                     </ListBoxItem>
                     <ListBoxItem>
-                        <Image Source="2x.jpg" Width="80" Height="20"/>
+                        <Image Source="icon\2x.jpg" Width="80" Height="20"/>
                     </ListBoxItem>
                     <ListBoxItem >
-                        <Image Source="3x.jpg" Width="80" Height="20"/>
+                        <Image Source="icon\3x.jpg" Width="80" Height="20"/>
                     </ListBoxItem>
                     <ListBoxItem>
-                        <Image Source="4x.jpg" Width="80" Height="20"/>
+                        <Image Source="icon\4x.jpg" Width="80" Height="20"/>
                     </ListBoxItem>
                     <ListBox.ContextMenu>
                         <ContextMenu>

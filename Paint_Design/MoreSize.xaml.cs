@@ -31,13 +31,14 @@ namespace Paint_Design
         private void size_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (change==true)
-            if (int.TryParse(size.Text, out int_size))
+            if (int.TryParse(size.Text, out int_size)||(size.Text==""))
                 line_example.StrokeThickness = int_size;
             else
                 MessageBox.Show("Vui lòng nhập số");
         }
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
+            if (size.Text !="")
             result = true;
             this.Close();
         }

@@ -33,8 +33,7 @@ namespace Paint_Design
         public TextBox text;
         public BitmapSource source;
         public Canvas savedCanvas = null;
-        public double dpi = 96d;
-        Image img = new Image();
+        public Image img = new Image();
         #endregion
         #region Constructor
         public MainWindow()
@@ -128,6 +127,7 @@ namespace Paint_Design
                 selectionRectangle.Visibility = Visibility.Collapsed;
                 img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
                 img.Cursor = null;
+                img.ContextMenu = null;
                 status.setTool("Select");
                 point_start.X = e.GetPosition(MyCanvas).X;
                 point_start.Y = e.GetPosition(MyCanvas).Y;
@@ -207,6 +207,7 @@ namespace Paint_Design
             if ((status.getTool() == "erase") || ((status.getTool() == "erasing")))
                 if ((x > 0) && (y > 0))
                 {
+                    MyCanvas.Cursor = Cursors.None;
                     erase_rec.Width = status.getSize() * 2;
                     erase_rec.Height = status.getSize() * 2;
                     Canvas.SetZIndex(erase_rec, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
@@ -214,6 +215,8 @@ namespace Paint_Design
                     Canvas.SetTop(erase_rec, y - erase_rec.Width / 2);
                     erase_rec.Visibility = Visibility.Visible;
                 }
+                else erase_rec.Visibility = Visibility.Collapsed;
+            else MyCanvas.Cursor = Cursors.Pen;
             /// <li> Nếu ClickDown==true 
             /// <ul>
             if (ClickDown)
@@ -221,7 +224,6 @@ namespace Paint_Design
                 /// <li> Nếu trạng thái là "lineDraw" => vẽ đoạn thẳng từ </li>
                 if (status.getTool() == "lineDraw")
                 {
-
                     line.X2 = x;
                     line.Y2 = y;
                 }
@@ -433,6 +435,34 @@ namespace Paint_Design
             }
         }
         /// <summary>
+        /// Xử lí khi click vào chọn FillColor
+        /// </summary>
+        /// <param name="btnFill"></param>
+        /// <param name="e"></param>
+        public void fill_Click(object btnFill, RoutedEventArgs e)
+        {
+            PickColor pickcolor = new PickColor(status.getFillColor());
+            pickcolor.Title = "Edit Fill Color";
+            if ((bool)pickcolor.ShowDialog())
+            { }
+            if (pickcolor.result) status.setFillColor(pickcolor.color);
+            lColor.Background = new SolidColorBrush(status.getFillColor());
+        }
+        /// <summary>
+        /// Xử lí khi click vào chọn BoderColor
+        /// </summary>
+        /// <param name="btnBoder"></param>
+        /// <param name="e"></param>
+        public void Boder_Click(object btnBoder, RoutedEventArgs e)
+        {
+            PickColor pickcolor = new PickColor(status.getBoderColor());
+            pickcolor.Title = "Edit Boder Color";
+            if ((bool)pickcolor.ShowDialog())
+            { }
+            if (pickcolor.result) status.setBoderColor(pickcolor.color);
+            BoderColor.Background = new SolidColorBrush(status.getBoderColor());
+        }
+        /// <summary>
         /// Xóa hết các hình trên panel Canvas
         /// </summary>
         public void New_Click(object sender, RoutedEventArgs e)
@@ -641,6 +671,8 @@ namespace Paint_Design
         public void Button_Click_select(object btnSelect, RoutedEventArgs e)
         {
             status.setTool("Select");
+            btn_Select.IsChecked = false;
+            btn_Select.IsChecked = true;
             selectionRectangle.Fill = null;
             MyCanvas.Cursor = Cursors.Cross;
         }
@@ -674,7 +706,9 @@ namespace Paint_Design
         public void erase_Click(object sender, RoutedEventArgs e)
         {
             status.setTool("erase");
-            erase_rec.Cursor = Cursors.Cross;
+            erase_rec.Cursor = Cursors.None;
+            erase_rec.StrokeThickness = 1;
+            erase_rec.Stroke = Brushes.Black;
             erase_rec.Fill = Brushes.White;
         }
         /// <summary>
@@ -709,32 +743,7 @@ namespace Paint_Design
             erase_rec.Height = 0;
             erase_rec.Width = 0;
         }
-        /// <summary>
-        /// Xử lí khi click vào chọn FillColor
-        /// </summary>
-        /// <param name="btnFill"></param>
-        /// <param name="e"></param>
-        public void fill_Click(object btnFill, RoutedEventArgs e)
-        {
-            PickColor pickcolor = new PickColor(status.getFillColor());
-            if ((bool)pickcolor.ShowDialog())
-            { }
-            if (pickcolor.result) status.setFillColor(pickcolor.color);
-            lColor.Background = new SolidColorBrush(status.getFillColor());
-        }
-        /// <summary>
-        /// Xử lí khi click vào chọn BoderColor
-        /// </summary>
-        /// <param name="btnBoder"></param>
-        /// <param name="e"></param>
-        public void Boder_Click(object btnBoder, RoutedEventArgs e)
-        {
-            PickColor pickcolor = new PickColor(status.getBoderColor());
-            if ((bool)pickcolor.ShowDialog())
-            { }
-            if (pickcolor.result) status.setBoderColor(pickcolor.color);
-            BoderColor.Background = new SolidColorBrush(status.getBoderColor());
-        }
+        
         /// <summary>
         /// Menu Copy
         /// </summary>
@@ -743,6 +752,7 @@ namespace Paint_Design
         private void NotInVersion(object button, RoutedEventArgs e)
         {
             MessageBox.Show("Sorry! Công cụ này chưa được xây dựng trong phiên bản hiện tại!");
+            btn_Select.IsChecked = true;
         }
         
         #endregion
