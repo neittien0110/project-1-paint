@@ -465,13 +465,33 @@ namespace Paint_Design
         /// <summary>
         /// Xóa hết các hình trên panel Canvas
         /// </summary>
-        public void New_Click(object sender, RoutedEventArgs e)
+        public void New_Executes(object sender, RoutedEventArgs e)
         {
             /// Xử lý sự kiện khi click vào MenuItem New
-            /// Sử dụng hàm Clear() được dựng sẵn để xóa các đối tượng trong MyCanvas
-            MyCanvas.Children.Clear();
-            selectionRectangle.Visibility = Visibility.Collapsed;
-            MyCanvas.Children.Add(selectionRectangle);
+            /// -   Confirm có Save lại hay không
+            MessageBoxResult result = MessageBox.Show("Bạn có muốn lưu lại?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            /// -   Nếu hủy
+            if (result == MessageBoxResult.Cancel)
+            {
+                /// -       Không làm gì cả
+            }
+            else
+            {
+                /// -   Nếu có
+                if (result == MessageBoxResult.Yes)
+                {
+                    /// -       Gọi hàm Save_Executes
+                    Save_Executes(new Object(), new RoutedEventArgs());
+                }
+                /// -   Nếu không hoặc sau khi lưu
+                /// -       Sử dụng hàm Clear() được dựng sẵn để xóa các đối tượng trong MyCanvas
+                MyCanvas.Children.Clear();
+                selectionRectangle.Visibility = Visibility.Collapsed;
+                erase_rec.Visibility = Visibility.Collapsed;
+                MyCanvas.Children.Add(Ct);
+                MyCanvas.Children.Add(selectionRectangle);
+                MyCanvas.Children.Add(erase_rec);
+            }
         }
         /// <summary>
         ///  Xử lý sự kiện khi click vào MenuItem Exit
@@ -483,7 +503,7 @@ namespace Paint_Design
         /*!
          * @brief Hàm mở OpenFileDialog và chọn file Image
          */
-        public void Open_Click(object sender, RoutedEventArgs e)
+        public void Open_Executes(object sender, RoutedEventArgs e)
         {
             ///- Thực hiện : File image được chọn được load trên MyCanvas
             ///- Quá trình:
@@ -518,7 +538,7 @@ namespace Paint_Design
         /// </summary>
         /// <param name="menuSave"></param>
         /// <param name="e"></param>
-        public void Save_Click(object menuSave, RoutedEventArgs e)
+        public void Save_Executes(object menuSave, RoutedEventArgs e)
         {
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.Filter = "JPEG Image|*.jpg|PNG Image|*.png| Bitmap Image|*.bmp";
@@ -554,17 +574,26 @@ namespace Paint_Design
                 }
 
         }
-        public void Copy_Click(object menuDel, RoutedEventArgs e)
+        private void CanCopy(object sender, CanExecuteRoutedEventArgs e)
         {
-            Clipboard.SetImage(source);
+            e.CanExecute = selectionRectangle.Visibility == Visibility.Visible;
+        }
+        /// <summary>
+        /// Copy
+        /// </summary>
+        /// <param name="menuCopy"></param>
+        /// <param name="e"></param>
+        public void Copy_Executes(object menuCopy, RoutedEventArgs e)
+        {
+                Clipboard.SetImage(source);
         }
         /// <summary>
         /// Lưu panel Canvas dưới dạng file XML
         /// </summary>
-        /// <param name="menuPaste"></param>
+        /// <param name="menuSaveXMl"></param>
         /// <param name="e"></param>
 
-        public void Save_XML_Click(object menuPaste, RoutedEventArgs e)
+        public void Save_XML_Click(object menuSaveXML, RoutedEventArgs e)
         {
             /// Tạo SaveFileDialog
             SaveFileDialog dlg = new SaveFileDialog();
@@ -589,9 +618,9 @@ namespace Paint_Design
         /// <summary>
         ///  Mở file dạng XML
         /// </summary>
-        /// <param name="menuPaste"></param>
+        /// <param name="menuOpenXML"></param>
         /// <param name="e"></param>
-        public void Open_XML_Click(object menuPaste, RoutedEventArgs e)
+        public void Open_XML_Click(object menuOpenXML, RoutedEventArgs e)
         {
             /// <ul>
             OpenFileDialog dlg = new OpenFileDialog();
@@ -607,8 +636,7 @@ namespace Paint_Design
                     savedCanvas = System.Windows.Markup.XamlReader.Load(fs) as Canvas;
                     fs.Close();
                     /// <li> add các UIElement của Canvas trong file XML vào Mycanvas</li>
-
-                    New_Click(new object(), new RoutedEventArgs());
+                    New_Executes(new object(), new RoutedEventArgs());
                     while (savedCanvas.Children.Count > 2)
                     {
                         UIElement uie = savedCanvas.Children[2];
@@ -679,9 +707,9 @@ namespace Paint_Design
         /// <summary>
         /// Khi click vào Tool vẽ ellip . . .
         /// </summary>
-        /// <param name="btnSelect"></param>
+        /// <param name="btnEllip"></param>
         /// <param name="e"></param>
-        public void Ellip_Click(object btnSelect, RoutedEventArgs e)
+        public void Ellip_Click(object btnEllip, RoutedEventArgs e)
         {
             /// - setTool
             status.setTool("ellip");
@@ -743,12 +771,7 @@ namespace Paint_Design
             erase_rec.Height = 0;
             erase_rec.Width = 0;
         }
-        
-        /// <summary>
-        /// Menu Copy
-        /// </summary>
-        /// <param name="menuDel"></param>
-        /// <param name="e"></param>
+       
         private void NotInVersion(object button, RoutedEventArgs e)
         {
             MessageBox.Show("Sorry! Công cụ này chưa được xây dựng trong phiên bản hiện tại!");
@@ -761,11 +784,14 @@ namespace Paint_Design
         {
             e.CanExecute = MyCanvas.Children.Count > 3;
         }
-        public void undo_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        public void undo_CommandBinding_Executes(object sender, ExecutedRoutedEventArgs e)
         {
             int count = MyCanvas.Children.Count;
             if (count > 0)
+            {
                 MyCanvas.Children.RemoveAt(count - 1);
+                selectionRectangle.Visibility = Visibility.Collapsed;
+            }
             else MessageBox.Show("Can not undo");
         }
         public void selectionRectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -795,21 +821,24 @@ namespace Paint_Design
             e.CanExecute = (status.getTool() == "Selected");
         }
 
-        private void del_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void del_CommandBinding_Executes(object sender, ExecutedRoutedEventArgs e)
         {
             MyCanvas.Children.Remove(img);
             selectionRectangle.Visibility = Visibility.Collapsed;
+        }
+        private void CanPaste(object sender, CanExecuteRoutedEventArgs e)
+        {
+            BitmapSource bitmap = Clipboard.GetImage();
+            e.CanExecute =(source != null);
         }
         /// <summary>
         /// Menu Paste
         /// </summary>
         /// <param name="menuPaste"></param>
         /// <param name="e"></param>
-        public void Paste_Click(object menuPaste, RoutedEventArgs e)
+        public void Paste_Executes(object menuPaste, RoutedEventArgs e)
         {
             BitmapSource bitmap = Clipboard.GetImage();
-            if (bitmap != null)
-            {
                 img.MouseLeftButtonDown -= selectionRectangle_MouseLeftButtonDown;
                 img.ContextMenu = null;
                 img = new Image { Source = bitmap };
@@ -828,7 +857,6 @@ namespace Paint_Design
                 selectionRectangle.Visibility = Visibility.Visible;
                 Canvas.SetZIndex(selectionRectangle, Canvas.GetZIndex(MyCanvas.Children[MyCanvas.Children.Count - 1]) + 1);
                 status.setTool("Selected");
-            }
         }
         /// <summary>
         /// Xử lí tạo ConfirmDialog khi click vào "X" - thoát
@@ -844,7 +872,7 @@ namespace Paint_Design
             }
             if (result == MessageBoxResult.Yes)
             {
-                Save_Click(new Object(), new RoutedEventArgs());
+                Save_Executes(new Object(), new RoutedEventArgs());
             }
         }
         /// <summary>
