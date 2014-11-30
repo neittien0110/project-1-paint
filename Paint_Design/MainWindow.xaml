@@ -4,6 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Paint_Design.MainWindow"
         Title="MyPaint" x:Name="main" Height="700" Width="1288.5" Background="#FF8F8B8B" WindowStartupLocation="CenterScreen" Icon="icon\but.jpg" SizeChanged="main_SizeChanged"
         Closing="main_Closing">
+    <Window.Resources>
+        <RoutedUICommand x:Key="NewCommand" Text="New" />
+        <RoutedUICommand x:Key="OpenCommand" Text="Open" />
+        <RoutedUICommand x:Key="SaveCommand" Text="Save" />
+        <RoutedUICommand x:Key="UndoCommand" Text="Undo" />
+        <RoutedUICommand x:Key="DeleteCommand" Text="Delete"/>
+        <RoutedUICommand x:Key="CopyCommand" Text="Copy" />
+        <RoutedUICommand x:Key="PasteCommand" Text="Paste" />
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource NewCommand}" Executed="New_Executes" />
+        <CommandBinding Command="{StaticResource SaveCommand}" Executed="Save_Executes" />
+        <CommandBinding Command="{StaticResource OpenCommand}" Executed="Open_Executes" />
+        <CommandBinding Command="{StaticResource UndoCommand}" Executed="undo_CommandBinding_Executes" CanExecute="undo_CommandBinding_CanExecute"/>
+        <CommandBinding Command="{StaticResource DeleteCommand}" Executed="del_CommandBinding_Executes" CanExecute="del_CommandBinding_CanExecute"/>
+        <CommandBinding Command="{StaticResource CopyCommand}" Executed="Copy_Executes" CanExecute="CanCopy"/>
+        <CommandBinding Command="{StaticResource PasteCommand}" Executed="Paste_Executes" CanExecute="CanPaste" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource NewCommand}" />
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource OpenCommand}" />
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{StaticResource SaveCommand}" />
+        <KeyBinding Key="Z" Modifiers="Ctrl" Command="{StaticResource UndoCommand}" />
+        <KeyBinding Key="C" Modifiers="Ctrl" Command="{StaticResource CopyCommand}" />
+        <KeyBinding Key="V" Modifiers="Ctrl" Command="{StaticResource PasteCommand}" />
+        <KeyBinding Key="Delete" Command="{StaticResource DeleteCommand}" />
+    </Window.InputBindings>
     <ScrollViewer Name="SCW" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="0" MouseMove="Mycanvas_Mouse_Move" ScrollViewer.CanContentScroll="False"
               MouseLeftButtonUp="Mycanvas_Mouse_Up"
@@ -21,43 +49,35 @@
                         <TranslateTransform X="0.486"/>
                     </TransformGroup>
                 </Menu.RenderTransform>
-                <MenuItem Header="File" FontSize="13.333">
-                    <MenuItem Header="New" HorizontalAlignment="Left" Width="162.666666666667" Click="New_Click"/>
+                <MenuItem Header="_File" FontSize="13.333">
+                    <MenuItem Header="New" HorizontalAlignment="Left" Width="162.666666666667" Command="{StaticResource NewCommand}" InputGestureText="Ctrl+N" />
                     <MenuItem Header="Open" HorizontalAlignment="Left" Width="162.666666666667">
-                        <MenuItem Header="Open IMG" HorizontalAlignment="Left" Width="162.666666666667" Click="Open_Click"/>
-                        <MenuItem Header="Open XML" HorizontalAlignment="Left" Width="162.666666666667" Click="Open_XML_Click"/>
+                        <MenuItem Header="Open IMG" HorizontalAlignment="Left" Width="194" Command="{StaticResource OpenCommand}" InputGestureText="Ctrl+O" RenderTransformOrigin="0.583,0.364" Margin="0,0,-31,0"/>
+                        <MenuItem Header="Open XML" HorizontalAlignment="Left" Width="194" Click="Open_XML_Click"/>
                     </MenuItem>
                     <MenuItem Header="Save" HorizontalAlignment="Left" Width="162.666666666667">
-                        <MenuItem Name="SaveFile" Header="To IMG" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_Click" />
-                        <MenuItem Name="SaveFileXML" Header="To XML" HorizontalAlignment="Left" Width="162.666666666667" Click="Save_XML_Click" />
+                        <MenuItem Name="SaveFile" Header="To IMG" HorizontalAlignment="Left" Width="194" Command="{StaticResource SaveCommand}" InputGestureText="Ctrl+S" />
+                        <MenuItem Name="SaveFileXML" Header="To XML" HorizontalAlignment="Left" Width="194" Click="Save_XML_Click" />
                     </MenuItem>
                     <Separator HorizontalAlignment="Left" Width="162.666666666667"/>
                     <MenuItem Header="Help" HorizontalAlignment="Left" Width="162.666666666667"/>
                     <MenuItem Header="Exit" HorizontalAlignment="Left" Width="162.666666666667"  Click="Exit_Click"/>
                 </MenuItem>
-                <MenuItem Header="Edit" FontSize="13.333">
-                    <MenuItem Header="Undo" HorizontalAlignment="Left" Width="162.666666666667"  Command="ApplicationCommands.Undo">
-                        <MenuItem.CommandBindings>
-                            <CommandBinding Command="ApplicationCommands.Undo"  CanExecute="undo_CommandBinding_CanExecute" Executed="undo_CommandBinding_Executed"/>
-                        </MenuItem.CommandBindings>
-                    </MenuItem>
-                    <MenuItem Header="Copy" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Copy"/>
-                    <MenuItem Header="Paste" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Paste"/>
-                    <MenuItem Header="Delete" HorizontalAlignment="Left" Width="162.666666666667" Command="ApplicationCommands.Delete">
-                        <MenuItem.CommandBindings>
-                            <CommandBinding Command="ApplicationCommands.Delete"  CanExecute="del_CommandBinding_CanExecute" Executed="del_CommandBinding_Executed"/>
-                        </MenuItem.CommandBindings>
-                    </MenuItem>
+                <MenuItem Header="_Edit" FontSize="13.333">
+                    <MenuItem Header="Undo" HorizontalAlignment="Left" Width="162.666666666667"  Command="{StaticResource UndoCommand}" InputGestureText="Ctrl+Z"/>
+                    <MenuItem Header="Copy" HorizontalAlignment="Left" Width="162.666666666667"  Command="{StaticResource CopyCommand}" InputGestureText="Ctrl+C"/>
+                    <MenuItem Header="Paste" HorizontalAlignment="Left" Width="162.666666666667" Command="{StaticResource PasteCommand}" InputGestureText="Ctrl+V"/>
+                    <MenuItem Header="Delete" HorizontalAlignment="Left" Width="162.666666666667" Command="{StaticResource DeleteCommand}" InputGestureText="Delete"/>
                     <MenuItem Header="Resize" HorizontalAlignment="Left" Width="162.666666666667" Click="Resize_Click" />
                 </MenuItem>
-                <MenuItem Header="More">
+                <MenuItem Header="_More">
                     <MenuItem Header="Color" HorizontalAlignment="Left" Width="140">
-                    	<MenuItem Header="Fill" HorizontalAlignment="Left" Width="139.506666666667" Click="fill_Click"/>
-                    	<MenuItem Header="Boder" HorizontalAlignment="Left" Width="139.506666666667" Click="Boder_Click"/>
+                        <MenuItem Header="Fill" HorizontalAlignment="Left" Width="139.506666666667" Click="fill_Click"/>
+                        <MenuItem Header="Boder" HorizontalAlignment="Left" Width="139.506666666667" Click="Boder_Click"/>
                     </MenuItem>
                     <MenuItem Header="Size" HorizontalAlignment="Left" Width="140" Click="More_Size_Click"/>
                 </MenuItem>
-                <MenuItem Header="Info" Click="info_Click"/>
+                <MenuItem Header="_Info" Click="info_Click"/>
             </Menu>
             <Grid Height="71" Margin="2,26,3,0" VerticalAlignment="Top" Background="#FFCBC2C2">
                 <Grid.ColumnDefinitions >
@@ -176,7 +196,6 @@
                         </ContextMenu>
                     </ListBox.ContextMenu>
                 </ListBox>
-      
             </StackPanel>
             <StatusBar Margin="2,0.639,3,5" Grid.Row="1" x:Name="Status_bar">
                 <StatusBarItem Width="186" HorizontalAlignment="Left" Margin="0,1">
@@ -195,9 +214,9 @@
 		>
                     <Canvas.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Clear" Click="New_Click"/>
-                            <MenuItem Header="Open" Click="Open_Click"/>
-                            <MenuItem Header="Paste" Click="Paste_Click"/>
+                            <MenuItem Header="Clear" Command="{StaticResource NewCommand}"/>
+                            <MenuItem Header="Open" Command="{StaticResource OpenCommand}"/>
+                            <MenuItem Header="Paste" Command="{StaticResource PasteCommand}"/>
                         </ContextMenu>
                     </Canvas.ContextMenu>
                     <Rectangle
@@ -214,16 +233,12 @@
 						Fill="White"
 						Visibility="Collapsed"
                        />
-                    <Image>
+                    <Image Name="Ct">
                         <Image.ContextMenu>
                             <ContextMenu Name="imgContext">
-                                <MenuItem Header="Copy" Click="Copy_Click"/>
-                                <MenuItem Header="Delete" Command="ApplicationCommands.Delete">
-                                    <MenuItem.CommandBindings>
-                                        <CommandBinding Command="ApplicationCommands.Delete"  CanExecute="del_CommandBinding_CanExecute" Executed="del_CommandBinding_Executed"/>
-                                    </MenuItem.CommandBindings>
-                                </MenuItem>
-                                <MenuItem Header="Paste" Click="Paste_Click"/>
+                                <MenuItem Header="Copy" Command="{StaticResource CopyCommand}" InputGestureText="Ctrl+C"/>
+                                <MenuItem Header="Delete" Command="{StaticResource DeleteCommand}" InputGestureText="Del"/>
+                                <MenuItem Header="Paste" Command="{StaticResource PasteCommand}" InputGestureText="Ctrl+V"/>
                             </ContextMenu>
                         </Image.ContextMenu>
                     </Image>
