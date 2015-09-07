@@ -1,0 +1,1 @@
+Lam lai paint giong trong window
